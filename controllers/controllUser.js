@@ -1,6 +1,36 @@
 import User from '../models/user.model.js'
 import { genSalt, hash,compare } from 'bcrypt'
 
+export async function getAllUsers(){
+    try {
+        const dataUsers = await User.find()
+        return res.status(200).json({
+            "status": true,
+            "data": dataUsers
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
+    }
+}
+
+export async function getUser() {
+    try {
+        const id = req.params.id
+        const dataUser = await User.findById(id)
+        return res.status(200).json({
+            "status": true,
+            "dataUser": dataUser
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
+    }
+}
 
 export async function saveUser(req,res){
     try {
@@ -73,3 +103,21 @@ export async function updateUser(req, res){
         })
     }
 }
+
+export async function deleteUser(req, res){
+    try {
+        const id = req.params.id
+        const userDeleted = await User.findByIdAndDelete(id)
+        return res.status(200).json({
+            "status": true,
+            "message": 'User succcesfully deleted'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
+    }
+}
+
+
