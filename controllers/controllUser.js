@@ -42,3 +42,34 @@ export async function saveUser(req,res){
         })
     }
 }
+
+export async function updateUser(req, res){
+    try {
+        const idUser = req.params.id
+        const {name, lastname, email, carrier, phone} = req.body
+
+        
+
+        const updateUser = await User.findByIdAndUpdate(idUser, 
+            {
+                name: name,
+                lastname: lastname,
+                email: email,
+                carrier: carrier,
+                phone: phone
+            },
+          
+            {new: true}
+            )
+
+        return res.status(200).json({
+            "status": true,
+            "message": 'Update user with successfully'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error
+        })
+    }
+}
