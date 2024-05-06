@@ -10,7 +10,12 @@ import swaggerDocs from './v1/swagger.js';
 
 const app = express();
 
-app.use(cors())
+const corsOptions = {
+    origin: true,
+    credentials: true
+};
+
+app.use(cors(corsOptions))
 dotenv.config()
 
 app.set('port', process.env.PORT)
