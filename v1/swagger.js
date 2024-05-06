@@ -12,7 +12,7 @@ const options = {
         basePath: '/'
     },
     apis: [
-        './routes/*.js'
+        './v1/routes/*.js'
     ],
 }
 
