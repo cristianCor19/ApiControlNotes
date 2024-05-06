@@ -1,5 +1,9 @@
 import User from '../models/user.model.js'
 import { genSalt, hash,compare } from 'bcrypt'
+import auth from '../firebase/configFirabase.js'
+import {createUserWithEmailAndPassword,} from 'firebase/auth'
+
+// const auth = app.auth()
 
 export async function getAllUsers(){
     try {
@@ -34,15 +38,17 @@ export async function getUser() {
 
 export async function saveUser(req,res){
     try {
+
         const {name, lastname, email, carrier,password, phone} = req.body
-
         const userFound = await User.findOne({ email: email})
-
+        
+        
+        // console.log(register);
 
         if(!userFound) {
             const salt = await genSalt(15)
             const hashedPassword = await hash(password, salt)
-            
+            const register = await createUserWithEmailAndPassword(auth,email, hashedPassword)
             const newUser = new User({
                 name,
                 lastname,
@@ -119,5 +125,3 @@ export async function deleteUser(req, res){
         })
     }
 }
-
-
