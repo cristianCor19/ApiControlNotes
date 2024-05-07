@@ -143,12 +143,6 @@ router.post('/registerUser', saveUser)
  *   User:
  *     type: object
  *     properties:
- *       idCardNumer:
- *         type: number
- *         unique: true
- *         required: true
- *         description: Enter number of identify card 
- *         example: 1002602877
  *       name:
  *         type: string
  *         required: true
@@ -165,6 +159,11 @@ router.post('/registerUser', saveUser)
  *         required: true
  *         description: Enter user email 
  *         example: example@gmail.com
+ *       carrier:
+ *         type: string
+ *         required: false
+ *         description: Enter you carrier
+ *         example: Systems Engineering
  *       password:
  *         type: string
  *         required: true
@@ -175,8 +174,7 @@ router.post('/registerUser', saveUser)
  *         require: false
  *         description: Enter user phone
  *         example: 3107258789
- *       role:
- *         $ref: '#/definitions/Role' 
+ *       
  *   
  *   UserLogin:
  *      type: object
