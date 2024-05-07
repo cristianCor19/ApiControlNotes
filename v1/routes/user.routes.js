@@ -1,7 +1,10 @@
 import {Router} from 'express'
 
 import {
-    saveUser
+    saveUser,
+    loginUser,
+    signOutUser,
+    verifySession
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -46,6 +49,11 @@ const router = Router()
  *          
  */
 router.post('/registerUser', saveUser)
+router.post('/signIn', loginUser)
+router.get('/signOut', signOutUser)
+router.get('/verifySession', verifySession)
+
+
 
 /**
  * @swagger

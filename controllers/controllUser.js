@@ -1,9 +1,9 @@
 import User from '../models/user.model.js'
 import { genSalt, hash,compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
-import {createUserWithEmailAndPassword,} from 'firebase/auth'
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth'
 
-// const auth = app.auth()
+
 
 export async function getAllUsers(){
     try {
@@ -123,5 +123,88 @@ export async function deleteUser(req, res){
             "status": false,
             "error": error
         })
+    }
+}
+
+export async function verifySession(req, res){
+    try {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                return res.status(200).json({
+                    "status": true,
+                    "message": "Exist session",
+                    "user": user 
+                });
+            } else {
+                return res.status(401).json({
+                    "status": false,
+                    "message": "No session exists"
+                });
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        });
+    }
+}
+
+export async function loginUser(req, res){
+    try {
+        const {email, password} = req.body
+        const userFound = await User.findOne({ email: email})
+     
+        if(!userFound){
+            return res.status(404).json({
+                "status": false,
+                "message": "Incorrect user or password"
+            })
+        }
+        //sing in user to firebase authentication
+        const loginFirebase = await signInWithEmailAndPassword(auth,email, userFound.secrets)
+
+        console.log(loginFirebase);
+
+        const passwordMatch = await compare(password, userFound.secrets)
+        
+
+        if (!passwordMatch) {
+            return res.status(401).json({
+                "status": false,
+                "message": "Incorrect user or password"
+            })
+        }
+
+        
+        return res.status(200).json({
+            "status": true,
+            "message": "Successful login",
+            
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
+
+    }
+}
+
+export async function signOutUser(req, res){
+    try {
+        await signOut(auth)
+        
+        return res.status(200).json({
+            "status": true,
+            "message": "Successful sign out",
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
+
     }
 }
