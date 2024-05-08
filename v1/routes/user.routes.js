@@ -17,6 +17,55 @@ const router = Router()
  *  description: Endpoints for users 
  */
 
+/**
+ * @swagger
+ * /user/signOut:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Close session 
+ *     description: Method to close session
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Session succesfully closed.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'     
+ */
+router.get('/signOut', signOutUser)
+
+/**
+ * @swagger
+ * /user/verifySession:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: verify exist session
+ *     description: Method to exist verify of a session
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Exist session.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       401: 
+ *         description: Not exist session.
+ *         schema: 
+ *           $ref: '#/definitions/notExistSession'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
+router.get('/verifySession', verifySession)
 
 
 /**
@@ -49,9 +98,37 @@ const router = Router()
  *          
  */
 router.post('/registerUser', saveUser)
+
+/**
+ * @swagger
+ * /user/signIn:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: User login
+ *     description: User login in the system.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: User
+ *         in: body
+ *         description: User data to login.
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/UserLogin'
+ *     responses:
+ *       200:
+ *         description: User successfully registered.
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullyLogin'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
 router.post('/signIn', loginUser)
-router.get('/signOut', signOutUser)
-router.get('/verifySession', verifySession)
 
 
 
@@ -82,13 +159,6 @@ router.get('/verifySession', verifySession)
  *       status:
  *         type: boolean
  *         example: true
- *       data: 
- *         type: object
- *         example: {
- *          "uid": "uid value",
- *          "email": "cristian9@gmail.com",
- *          "token": "token value"
- *          }
  *       success:
  *         type: string
  *         example: message of successfully login
@@ -133,7 +203,7 @@ router.get('/verifySession', verifySession)
  *        type: string
  *        example: message of answer successfully
  * 
- *   notExistAuthorization:
+ *   notExistSession:
  *     type: object
  *     properties:
  *      status:
@@ -141,7 +211,7 @@ router.get('/verifySession', verifySession)
  *        example: false
  *      message:
  *        type: string
- *        example: not exist authorization
+ *        example: not exist session
  * 
  * 
  *   Role:
@@ -191,11 +261,11 @@ router.get('/verifySession', verifySession)
  *         unique: true
  *         required: true
  *         type: string
- *         example: jexample@gmail.com
+ *         example: cristian7@gmail.com
  *        password:
  *         required: true
  *         type: string
- *         example: dariogomez133
+ *         example: cristian
  * 
  *   UserUpdateImage:
  *      type: object
