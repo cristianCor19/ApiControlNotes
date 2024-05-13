@@ -42,8 +42,7 @@ export async function saveUser(req,res){
         const {name, lastname, email, carrier,password, phone} = req.body
         const userFound = await User.findOne({ email: email})
         
-        
-        // console.log(register);
+    
 
         if(!userFound) {
             const salt = await genSalt(15)
