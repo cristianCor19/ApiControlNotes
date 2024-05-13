@@ -30,6 +30,11 @@ const userSchema = new Schema(
         secrets:{
            type: String,
            required: true, 
+        },
+        uid:{
+            type: String,
+            required: true,
+            unique: true
         }
         
     },

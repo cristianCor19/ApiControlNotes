@@ -48,7 +48,8 @@ export async function saveUser(req,res){
         if(!userFound) {
             const salt = await genSalt(15)
             const hashedPassword = await hash(password, salt)
-            const register = await createUserWithEmailAndPassword(auth,email, hashedPassword)
+            const registerFirabase = await createUserWithEmailAndPassword(auth,email, hashedPassword)
+            const uidUser = registerFirabase.user.uid
             const newUser = new User({
                 name,
                 lastname,
@@ -56,6 +57,7 @@ export async function saveUser(req,res){
                 secrets: hashedPassword,
                 carrier,
                 phone,
+                uid: uidUser
             })
 
             const userSaveData = await newUser.save()
