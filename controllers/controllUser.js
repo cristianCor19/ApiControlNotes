@@ -42,14 +42,12 @@ export async function saveUser(req,res){
         const {name, lastname, email, carrier,password, phone} = req.body
         const userFound = await User.findOne({ email: email})
         
-        
-        // console.log(register);
+    
 
         if(!userFound) {
             const salt = await genSalt(15)
             const hashedPassword = await hash(password, salt)
-            const registerFirabase = await createUserWithEmailAndPassword(auth,email, hashedPassword)
-            const uidUser = registerFirabase.user.uid
+            const register = await createUserWithEmailAndPassword(auth,email, hashedPassword)
             const newUser = new User({
                 name,
                 lastname,
@@ -57,7 +55,6 @@ export async function saveUser(req,res){
                 secrets: hashedPassword,
                 carrier,
                 phone,
-                uid: uidUser
             })
 
             const userSaveData = await newUser.save()
