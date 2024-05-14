@@ -65,7 +65,7 @@ router.get('/signOut', signOutUser)
  *         
  *          
  */
-router.get('/verifySession', verifySession)
+router.get('/verifySession/:token', verifySession)
 
 
 /**

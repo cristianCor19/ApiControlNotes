@@ -1,11 +1,12 @@
 import User from '../models/user.model.js'
-import { genSalt, hash,compare } from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { genSalt, hash, compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut, onAuthStateChanged} from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
 
 
 
-export async function getAllUsers(){
+export async function getAllUsers() {
     try {
         const dataUsers = await User.find()
         return res.status(200).json({
@@ -36,19 +37,19 @@ export async function getUser() {
     }
 }
 
-export async function saveUser(req,res){
+export async function saveUser(req, res) {
     try {
 
         const {name, lastname, email, carrier,password, phone} = req.body
         const userFound = await User.findOne({ email: email})
         
-        
-        // console.log(register);
+    
 
-        if(!userFound) {
+        if (!userFound) {
             const salt = await genSalt(15)
             const hashedPassword = await hash(password, salt)
-            const register = await createUserWithEmailAndPassword(auth,email, hashedPassword)
+            const registerFirabase = await createUserWithEmailAndPassword(auth,email, hashedPassword)
+            const uidUser = registerFirabase.user.uid;
             const newUser = new User({
                 name,
                 lastname,
@@ -64,7 +65,7 @@ export async function saveUser(req,res){
                 "status": true,
                 "message": 'User saved successfully'
             })
-        }else{
+        } else {
             return res.status(500).json({
                 "status": false,
                 "error": error,
@@ -79,14 +80,14 @@ export async function saveUser(req,res){
     }
 }
 
-export async function updateUser(req, res){
+export async function updateUser(req, res) {
     try {
         const idUser = req.params.id
-        const {name, lastname, email, carrier, phone} = req.body
+        const { name, lastname, email, carrier, phone } = req.body
 
-        
 
-        const updateUser = await User.findByIdAndUpdate(idUser, 
+
+        const updateUser = await User.findByIdAndUpdate(idUser,
             {
                 name: name,
                 lastname: lastname,
@@ -94,9 +95,9 @@ export async function updateUser(req, res){
                 carrier: carrier,
                 phone: phone
             },
-          
-            {new: true}
-            )
+
+            { new: true }
+        )
 
         return res.status(200).json({
             "status": true,
@@ -110,7 +111,7 @@ export async function updateUser(req, res){
     }
 }
 
-export async function deleteUser(req, res){
+export async function deleteUser(req, res) {
     try {
         const id = req.params.id
         const userDeleted = await User.findByIdAndDelete(id)
@@ -126,14 +127,17 @@ export async function deleteUser(req, res){
     }
 }
 
-export async function verifySession(req, res){
+export async function verifySession(req, res) {
     try {
-        auth.onAuthStateChanged((user) => {
-            if (user) {
+        const decodeToken = jwt.decode(req.params.token)
+        const emailUser = decodeToken.email
+        // console.log(emailUser);
+        onAuthStateChanged(auth, () => {
+            if (emailUser) {
                 return res.status(200).json({
                     "status": true,
                     "message": "Exist session",
-                    "user": user 
+                    "user": emailUser
                 });
             } else {
                 return res.status(401).json({
@@ -142,6 +146,7 @@ export async function verifySession(req, res){
                 });
             }
         });
+        
     } catch (error) {
         return res.status(500).json({
             "status": false,
@@ -150,24 +155,26 @@ export async function verifySession(req, res){
     }
 }
 
-export async function loginUser(req, res){
+export async function loginUser(req, res) {
     try {
-        const {email, password} = req.body
-        const userFound = await User.findOne({ email: email})
-     
-        if(!userFound){
+        const { email, password } = req.body
+        const userFound = await User.findOne({ email: email })
+
+        if (!userFound) {
             return res.status(404).json({
                 "status": false,
                 "message": "Incorrect user or password"
             })
         }
         //sing in user to firebase authentication
-        const loginFirebase = await signInWithEmailAndPassword(auth,email, userFound.secrets)
+        const loginFirebase = await signInWithEmailAndPassword(auth, email, userFound.secrets)
 
-        console.log(loginFirebase);
+        // console.log(loginFirebase);
+        const idToken = loginFirebase._tokenResponse.idToken
+
 
         const passwordMatch = await compare(password, userFound.secrets)
-        
+
 
         if (!passwordMatch) {
             return res.status(401).json({
@@ -176,13 +183,13 @@ export async function loginUser(req, res){
             })
         }
 
-        
         return res.status(200).json({
             "status": true,
             "message": "Successful login",
-            
+            "token": idToken
+
         })
-        
+
     } catch (error) {
         return res.status(500).json({
             "status": false,
@@ -192,10 +199,10 @@ export async function loginUser(req, res){
     }
 }
 
-export async function signOutUser(req, res){
+export async function signOutUser(req, res) {
     try {
         await signOut(auth)
-        
+
         return res.status(200).json({
             "status": true,
             "message": "Successful sign out",
