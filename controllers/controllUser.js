@@ -2,9 +2,13 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import { genSalt, hash, compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from 'firebase/auth'
+import { configAdminFirebase } from "../firebase/configFirabaseAdmin.js";
 
-
+import admin from 'firebase-admin'
+admin.initializeApp({
+    credential: admin.credential.cert(configAdminFirebase)
+})
 
 export async function getAllUsers() {
     try {
@@ -112,10 +116,20 @@ export async function updateUser(req, res) {
     }
 }
 
-export async function deleteUser(req, res) {
+export async function deleteUserGeneral(req, res) {
     try {
+        console.log('within deleteUser');
         const id = req.params.id
+        
+        
+        
         const userDeleted = await User.findByIdAndDelete(id)
+        const uidFirebase = userDeleted.uid
+        console.log(uidFirebase);
+        const deleteFirebase = await admin.auth().deleteUser(uidFirebase)
+
+        console.log(deleteFirebase);
+
         return res.status(200).json({
             "status": true,
             "message": 'User succcesfully deleted'
