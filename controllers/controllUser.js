@@ -128,16 +128,18 @@ export async function deleteUser(req, res) {
 }
 
 export async function verifySession(req, res) {
+    console.log('verifySession');
     try {
         const decodeToken = jwt.decode(req.params.token)
         const emailUser = decodeToken.email
-        // console.log(emailUser);
+        // console.log(decodeToken);
         onAuthStateChanged(auth, () => {
+            
             if (emailUser) {
                 return res.status(200).json({
                     "status": true,
                     "message": "Exist session",
-                    "user": emailUser
+                    "user": emailUser,
                 });
             } else {
                 return res.status(401).json({
@@ -156,6 +158,7 @@ export async function verifySession(req, res) {
 }
 
 export async function loginUser(req, res) {
+    console.log('loginUser');
     try {
         const { email, password } = req.body
         const userFound = await User.findOne({ email: email })
