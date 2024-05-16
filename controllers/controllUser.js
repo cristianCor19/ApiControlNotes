@@ -121,14 +121,9 @@ export async function deleteUserGeneral(req, res) {
         console.log('within deleteUser');
         const id = req.params.id
         
-        
-        
         const userDeleted = await User.findByIdAndDelete(id)
         const uidFirebase = userDeleted.uid
-        console.log(uidFirebase);
         const deleteFirebase = await admin.auth().deleteUser(uidFirebase)
-
-        console.log(deleteFirebase);
 
         return res.status(200).json({
             "status": true,
