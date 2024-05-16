@@ -4,7 +4,8 @@ import {
     saveUser,
     loginUser,
     signOutUser,
-    verifySession
+    verifySession,
+    deleteUserGeneral
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -129,6 +130,8 @@ router.post('/registerUser', saveUser)
  *          
  */
 router.post('/signIn', loginUser)
+
+router.delete('/deleteUser/:id', deleteUserGeneral)
 
 
 
