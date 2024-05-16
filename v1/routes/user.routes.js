@@ -42,7 +42,7 @@ router.get('/signOut', signOutUser)
 
 /**
  * @swagger
- * /user/verifySession:
+ * /user/verifySession/:token:
  *   get:
  *     tags:
  *       - Users
@@ -205,6 +205,19 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *      message:
  *        type: string
  *        example: message of answer successfully
+ *   
+ *   existsSession:
+ *     type: boolean
+ *     properties:
+ *      status:
+ *        type: boolean
+ *        example: true
+ *      message:
+ *        type: string
+ *        example: Exist session
+ *      user:
+ *        type: string
+ *        example: example@gmail.com
  * 
  *   notExistSession:
  *     type: object
