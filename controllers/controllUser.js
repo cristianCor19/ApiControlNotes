@@ -100,9 +100,6 @@ export async function updateUser(req, res) {
     try {
         const idUser = req.params.id
         const { name, lastname, email, carrier, phone } = req.body
-
-
-
         const updateUser = await User.findByIdAndUpdate(idUser,
             {
                 name: name,
@@ -114,6 +111,12 @@ export async function updateUser(req, res) {
 
             { new: true }
         )
+
+        const uidFirebase = updateUser.uid
+        const deleteFirebase = await admin.auth().updateUser(uidFirebase, {
+            email: email,
+        })
+        
 
         return res.status(200).json({
             "status": true,
