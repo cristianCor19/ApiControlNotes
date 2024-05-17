@@ -5,7 +5,8 @@ import {
     loginUser,
     signOutUser,
     verifySession,
-    deleteUserGeneral
+    deleteUserGeneral,
+    getProfileUser
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -17,6 +18,8 @@ const router = Router()
  *  name: Users
  *  description: Endpoints for users 
  */
+
+router.get('/profileUser/:token', getProfileUser)
 
 /**
  * @swagger

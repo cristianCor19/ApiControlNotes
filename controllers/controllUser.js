@@ -25,13 +25,24 @@ export async function getAllUsers() {
     }
 }
 
-export async function getUser() {
+export async function getProfileUser(req, res) {
     try {
-        const id = req.params.id
-        const dataUser = await User.findById(id)
+        const decodeToken = jwt.decode(req.params.token)
+        const emailUser = decodeToken.email
+        const dataUser = await User.findOne({ email: emailUser})
+
         return res.status(200).json({
-            "status": true,
-            "dataUser": dataUser
+            status: true,
+            message: "User found successfully",
+            data: {
+                _id: dataUser._id,
+                name: dataUser.name,
+                lastname: dataUser.lastname,
+                email: dataUser.email,
+                carrier: dataUser.carrier,
+                phone: dataUser.phone,
+                uid: dataUser.uid
+            }
         })
     } catch (error) {
         return res.status(500).json({
