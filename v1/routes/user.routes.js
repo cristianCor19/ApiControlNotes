@@ -6,7 +6,8 @@ import {
     signOutUser,
     verifySession,
     deleteUserGeneral,
-    getProfileUser
+    getProfileUser,
+    updateUser
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -136,6 +137,7 @@ router.post('/signIn', loginUser)
 
 router.delete('/deleteUser/:id', deleteUserGeneral)
 
+router.put('/updateUser/:id', updateUser)
 
 
 /**
