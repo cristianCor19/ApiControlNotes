@@ -2,9 +2,6 @@ import {Router} from 'express'
 
 import {
     saveUser,
-    loginUser,
-    signOutUser,
-    verifySession
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -16,56 +13,6 @@ const router = Router()
  *  name: Users
  *  description: Endpoints for users 
  */
-
-/**
- * @swagger
- * /user/signOut:
- *   get:
- *     tags:
- *       - Users
- *     summary: Close session 
- *     description: Method to close session
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Session succesfully closed.
- *         schema:
- *           $ref: '#/definitions/statusGeneralSuccessfully'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'     
- */
-router.get('/signOut', signOutUser)
-
-/**
- * @swagger
- * /user/verifySession/:token:
- *   get:
- *     tags:
- *       - Users
- *     summary: verify exist session
- *     description: Method to exist verify of a session
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Exist session.
- *         schema:
- *           $ref: '#/definitions/statusGeneralSuccessfully'
- *       401: 
- *         description: Not exist session.
- *         schema: 
- *           $ref: '#/definitions/notExistSession'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'
- *         
- *          
- */
-router.get('/verifySession/:token', verifySession)
 
 
 /**
@@ -98,38 +45,6 @@ router.get('/verifySession/:token', verifySession)
  *          
  */
 router.post('/registerUser', saveUser)
-
-/**
- * @swagger
- * /user/signIn:
- *   post:
- *     tags:
- *       - Users
- *     summary: User login
- *     description: User login in the system.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: User
- *         in: body
- *         description: User data to login.
- *         required: true
- *         schema:
- *           $ref: '#/definitions/UserLogin'
- *     responses:
- *       200:
- *         description: User successfully registered.
- *         schema:
- *           $ref: '#/definitions/SuccessfullyLogin'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'
- *         
- *          
- */
-router.post('/signIn', loginUser)
-
 
 
 /**
