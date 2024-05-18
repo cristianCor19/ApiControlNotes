@@ -240,7 +240,7 @@ export async function sendEmailRecovey(req, res){
     } catch (error) {
         return res.status(500).json({
             "status": false,
-            "error": error
+            "error": error.message
         })
     }
 }
