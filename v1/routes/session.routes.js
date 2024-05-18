@@ -22,7 +22,7 @@ const router = Router()
  * /session/signOut:
  *   get:
  *     tags:
- *       - Users
+ *       - Session
  *     summary: Close session 
  *     description: Method to close session
  *     produces:
@@ -44,7 +44,7 @@ router.get('/signOut', signOutUser)
  * /session/verifySession/:token:
  *   get:
  *     tags:
- *       - Users
+ *       - Session
  *     summary: verify exist session
  *     description: Method to exist verify of a session
  *     produces:
@@ -72,7 +72,7 @@ router.get('/verifySession/:token', verifySession)
  * /session/signIn:
  *   post:
  *     tags:
- *       - Users
+ *       - Session
  *     summary: User login
  *     description: User login in the system.
  *     produces:
