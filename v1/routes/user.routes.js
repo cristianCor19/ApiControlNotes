@@ -69,7 +69,6 @@ router.get('/profileUser/:token', getProfileUser)
 router.get('/signOut', signOutUser)
 
 
-
 /**
  * @swagger
  * /user/registerUser:
@@ -100,37 +99,6 @@ router.get('/signOut', signOutUser)
  *          
  */
 router.post('/registerUser', saveUser)
-
-/**
- * @swagger
- * /user/signIn:
- *   post:
- *     tags:
- *       - Users
- *     summary: User login
- *     description: User login in the system.
- *     produces:
- *       - application/json
- *     parameters:
- *       - name: User
- *         in: body
- *         description: User data to login.
- *         required: true
- *         schema:
- *           $ref: '#/definitions/UserLogin'
- *     responses:
- *       200:
- *         description: User successfully registered.
- *         schema:
- *           $ref: '#/definitions/SuccessfullyLogin'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'
- *         
- *          
- */
-router.post('/signIn', loginUser)
 
 
 /**
