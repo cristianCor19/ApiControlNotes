@@ -5,7 +5,6 @@ import {
     deleteUserGeneral,
     getProfileUser,
     updateUser,
-    sendEmailRecovey
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -160,7 +159,6 @@ router.post('/registerUser', saveUser)
  */
 router.post('/signIn', loginUser)
 
-router.post('/sendEmail', sendEmailRecovey)
 
 /**
  * @swagger
