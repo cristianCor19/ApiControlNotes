@@ -46,27 +46,7 @@ const router = Router()
  */
 router.get('/profileUser/:token', getProfileUser)
 
-/**
- * @swagger
- * /user/signOut:
- *   get:
- *     tags:
- *       - Users
- *     summary: Close session 
- *     description: Method to close session
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Session succesfully closed.
- *         schema:
- *           $ref: '#/definitions/statusGeneralSuccessfully'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'     
- */
-router.get('/signOut', signOutUser)
+
 
 
 /**
