@@ -80,3 +80,21 @@ export async function signOutUser(req, res) {
 
     }
 }
+
+export async function sendEmailRecovey(req, res){
+    try {
+        const {email} = req.body
+        const recovery =  await sendPasswordResetEmail(auth, email);
+    
+        return res.status(200).json({
+            "status": true,
+            "message": "Password recovery email successfully sent",
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error.message
+        })
+    }
+}

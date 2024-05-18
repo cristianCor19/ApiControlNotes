@@ -3,7 +3,8 @@ import {Router} from 'express'
 import {
     loginUser,
     signOutUser,
-    verifySession
+    verifySession,
+    sendEmailRecovey
 }from '../../controllers/controllSession.js'
 
 const router = Router()
@@ -97,6 +98,7 @@ router.get('/verifySession/:token', verifySession)
  */
 router.post('/signIn', loginUser)
 
+router.post('/sendEmail', sendEmailRecovey)
 
 /**
  * @swagger
