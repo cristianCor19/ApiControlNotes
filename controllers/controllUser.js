@@ -158,7 +158,6 @@ export async function verifySession(req, res) {
 }
 
 export async function loginUser(req, res) {
-    console.log('loginUser');
     try {
         const { email, password } = req.body
         const userFound = await User.findOne({ email: email })
@@ -170,21 +169,9 @@ export async function loginUser(req, res) {
             })
         }
         //sing in user to firebase authentication
-        const loginFirebase = await signInWithEmailAndPassword(auth, email, userFound.secrets)
+        const loginFirebase = await signInWithEmailAndPassword(auth, email, password)
 
-        // console.log(loginFirebase);
         const idToken = loginFirebase._tokenResponse.idToken
-
-
-        const passwordMatch = await compare(password, userFound.secrets)
-
-
-        if (!passwordMatch) {
-            return res.status(401).json({
-                "status": false,
-                "message": "Incorrect user or password"
-            })
-        }
 
         return res.status(200).json({
             "status": true,
