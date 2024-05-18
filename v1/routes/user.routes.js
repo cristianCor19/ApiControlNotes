@@ -2,9 +2,6 @@ import {Router} from 'express'
 
 import {
     saveUser,
-    loginUser,
-    signOutUser,
-    verifySession,
     deleteUserGeneral,
     getProfileUser,
     updateUser,
