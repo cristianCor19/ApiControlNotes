@@ -2,7 +2,7 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import { genSalt, hash, compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, sendPasswordResetEmail} from 'firebase/auth'
 import { configAdminFirebase } from "../firebase/configFirabaseAdmin.js";
 
 import admin from 'firebase-admin'
@@ -240,5 +240,23 @@ export async function signOutUser(req, res) {
             "error": error
         })
 
+    }
+}
+
+export async function sendEmailRecovey(req, res){
+    try {
+        const email = 'cordobac96@gmail.com'
+          await sendPasswordResetEmail(auth, email);
+    
+        return res.status(200).json({
+            "status": true,
+            "message": "Send email successfully",
+        })
+        
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
     }
 }
