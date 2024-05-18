@@ -7,7 +7,8 @@ import {
     verifySession,
     deleteUserGeneral,
     getProfileUser,
-    updateUser
+    updateUser,
+    sendEmailRecovey
 }from '../../controllers/controllUser.js'
 
 const router = Router()
@@ -139,7 +140,7 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
 
 router.put('/updateUser/:id', updateUser)
 
-
+router.get('/sendEmail', sendEmailRecovey)
 /**
  * @swagger
  * definitions:
