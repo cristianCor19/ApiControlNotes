@@ -60,7 +60,7 @@ export async function saveUser(req, res) {
         
     
 
-        if (!userFound) {
+        if(!userFound) {
             const salt = await genSalt(15)
             const hashedPassword = await hash(password, salt)
             const registerFirabase = await createUserWithEmailAndPassword(auth,email, hashedPassword)
@@ -69,7 +69,6 @@ export async function saveUser(req, res) {
                 name,
                 lastname,
                 email,
-                secrets: hashedPassword,
                 carrier,
                 phone,
                 uid: uidUser,

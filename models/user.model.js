@@ -27,10 +27,6 @@ const userSchema = new Schema(
             type: Number,
             required: false,
         },
-        secrets:{
-           type: String,
-           required: true, 
-        },
         uid:{
             type: String,
             required: true,
