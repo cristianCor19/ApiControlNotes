@@ -136,11 +136,13 @@ router.post('/registerUser', saveUser)
  */
 router.post('/signIn', loginUser)
 
+router.post('/sendEmail', sendEmailRecovey)
+
 router.delete('/deleteUser/:id', deleteUserGeneral)
 
 router.put('/updateUser/:id', updateUser)
 
-router.get('/sendEmail', sendEmailRecovey)
+
 /**
  * @swagger
  * definitions:
