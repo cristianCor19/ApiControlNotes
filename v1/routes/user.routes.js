@@ -68,33 +68,6 @@ router.get('/profileUser/:token', getProfileUser)
  */
 router.get('/signOut', signOutUser)
 
-/**
- * @swagger
- * /user/verifySession/:token:
- *   get:
- *     tags:
- *       - Users
- *     summary: verify exist session
- *     description: Method to exist verify of a session
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Exist session.
- *         schema:
- *           $ref: '#/definitions/existsSession'
- *       401: 
- *         description: Not exist session.
- *         schema: 
- *           $ref: '#/definitions/notExistSession'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'
- *         
- *          
- */
-router.get('/verifySession/:token', verifySession)
 
 
 /**
