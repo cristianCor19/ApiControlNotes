@@ -19,8 +19,35 @@ const router = Router()
  * tags:
  *  name: Users
  *  description: Endpoints for users 
- */
+*/
 
+
+/**
+ * @swagger
+ * /user/profileUser/:token:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: User profile
+ *     description: obtain user data for profile.
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: User successfully profile.
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullyProfile'
+ *       404:
+ *         description: erroneous parameters 
+ *         schema:
+ *           $ref: '#/definitions/notFoundUser'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
 router.get('/profileUser/:token', getProfileUser)
 
 /**
@@ -59,7 +86,7 @@ router.get('/signOut', signOutUser)
  *       200:
  *         description: Exist session.
  *         schema:
- *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *           $ref: '#/definitions/existsSession'
  *       401: 
  *         description: Not exist session.
  *         schema: 
@@ -138,9 +165,40 @@ router.post('/signIn', loginUser)
 
 router.post('/sendEmail', sendEmailRecovey)
 
+/**
+ * @swagger
+ * /user/updateUser/:id:
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: User update  
+ *     description: User update information data.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: User
+ *         in: body
+ *         description: User data for update.
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/UserUpdate'
+ *     responses:
+ *       200:
+ *         description: User successfully update image.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
+router.put('/updateUser/:id', updateUser)
+
 router.delete('/deleteUser/:id', deleteUserGeneral)
 
-router.put('/updateUser/:id', updateUser)
+
 
 
 /**
@@ -183,12 +241,13 @@ router.put('/updateUser/:id', updateUser)
  *       data: 
  *         type: object
  *         example: {
- *          "_id": "id user value",
- *           "name": "name value",
- *           "lastname": "lastname value",
- *           "email": "email value",
- *           "phone": phone value,
- *           "image": "image value"
+ *          "_id": "4242aff2",
+ *           "name": "camilo",
+ *           "lastname": "perez",
+ *           "carrier": "System Engineering",
+ *           "email": "example@gmail.com",
+ *           "phone": 492797429,
+ *           "uid": "4242dfdfs31"
  *          }
  *       message:
  *         type: string
@@ -215,7 +274,7 @@ router.put('/updateUser/:id', updateUser)
  *        example: message of answer successfully
  *   
  *   existsSession:
- *     type: boolean
+ *     type: object
  *     properties:
  *      status:
  *        type: boolean
