@@ -19,7 +19,7 @@ const router = Router()
 
 /**
  * @swagger
- * /user/signOut:
+ * /session/signOut:
  *   get:
  *     tags:
  *       - Users
@@ -41,7 +41,7 @@ router.get('/signOut', signOutUser)
 
 /**
  * @swagger
- * /user/verifySession/:token:
+ * /session/verifySession/:token:
  *   get:
  *     tags:
  *       - Users
@@ -69,7 +69,7 @@ router.get('/verifySession/:token', verifySession)
 
 /**
  * @swagger
- * /user/signIn:
+ * /session/signIn:
  *   post:
  *     tags:
  *       - Users
