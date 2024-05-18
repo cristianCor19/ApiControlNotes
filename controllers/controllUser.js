@@ -246,7 +246,7 @@ export async function signOutUser(req, res) {
 export async function sendEmailRecovey(req, res){
     try {
         const email = 'cordobac96@gmail.com'
-          await sendPasswordResetEmail(auth, email);
+        const recovery =  await sendPasswordResetEmail(auth, email);
     
         return res.status(200).json({
             "status": true,
