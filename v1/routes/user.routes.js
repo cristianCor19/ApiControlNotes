@@ -112,6 +112,28 @@ router.post('/registerUser', saveUser)
  */
 router.put('/updateUser/:id', updateUser)
 
+/**
+ * @swagger
+ * /user/deleteUser/:id:
+ *   delete:
+ *     tags:
+ *       - Users
+ *     summary: Delete user 
+ *     description: Delete user .
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Delete user succesfully.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
 router.delete('/deleteUser/:id', deleteUserGeneral)
 
 
@@ -138,15 +160,6 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *       success:
  *         type: string
  *         example: message of successfully
- *   SuccessfullyLogin: 
- *     type: object
- *     properties:
- *       status:
- *         type: boolean
- *         example: true
- *       success:
- *         type: string
- *         example: message of successfully login
  * 
  *   SuccessfullyProfile: 
  *     type: object
@@ -188,35 +201,8 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *      message:
  *        type: string
  *        example: message of answer successfully
- *   
- *   existsSession:
- *     type: object
- *     properties:
- *      status:
- *        type: boolean
- *        example: true
- *      message:
- *        type: string
- *        example: Exist session
- *      user:
- *        type: string
- *        example: example@gmail.com
+ *    
  * 
- *   notExistSession:
- *     type: object
- *     properties:
- *      status:
- *        type: boolean
- *        example: false
- *      message:
- *        type: string
- *        example: not exist session
- * 
- * 
- *   Role:
- *     type: string
- *     enum: ['patient', 'doctor']
- *     default: 'patient'
  *   User:
  *     type: object
  *     properties:
@@ -252,28 +238,6 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *         description: Enter user phone
  *         example: 3107258789
  *       
- *   
- *   UserLogin:
- *      type: object
- *      properties:
- *        email:
- *         unique: true
- *         required: true
- *         type: string
- *         example: cristian7@gmail.com
- *        password:
- *         required: true
- *         type: string
- *         example: cristian
- * 
- *   UserUpdateImage:
- *      type: object
- *      properties:
- *        image:
- *         required: true
- *         type: string
- *         example: https://firebasestorage.googleapis.com/v0/b/test-firebase-a4d1d.appspot.com/o/images%2Fprofile-image.webp?alt=media&token=e5f92403-94c6-4749-9f11-6acd4e28ca13
- *         description: rute of the image
  * 
  * 
  *   UserUpdate:
