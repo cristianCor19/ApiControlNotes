@@ -1,6 +1,7 @@
 import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
-import {signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'
+import auth from '../firebase/configFirabase.js'
+import {signInWithEmailAndPassword, signOut, onAuthStateChanged,sendPasswordResetEmail } from 'firebase/auth'
 
 export async function verifySession(req, res) {
     console.log('verifySession');

@@ -1,11 +1,11 @@
-import {Router} from 'express'
+import { Router } from 'express'
 
 import {
     loginUser,
     signOutUser,
     verifySession,
     sendEmailRecovey
-}from '../../controllers/controllSession.js'
+} from '../../controllers/controllSession.js'
 
 const router = Router()
 
@@ -53,11 +53,11 @@ router.get('/signOut', signOutUser)
  *       200:
  *         description: Exist session.
  *         schema:
- *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *           $ref: '#/definitions/ExistsSession'
  *       401: 
  *         description: Not exist session.
  *         schema: 
- *           $ref: '#/definitions/notExistSession'
+ *           $ref: '#/definitions/NotExistSession'
  *       500:
  *         description: Server error.
  *         schema:
@@ -89,6 +89,10 @@ router.get('/verifySession/:token', verifySession)
  *         description: User successfully registered.
  *         schema:
  *           $ref: '#/definitions/SuccessfullyLogin'
+ *       404:
+ *         description: Error user.
+ *         schema:
+ *           $ref: '#/definitions/NotFoundUserLogin'
  *       500:
  *         description: Server error.
  *         schema:
@@ -98,6 +102,35 @@ router.get('/verifySession/:token', verifySession)
  */
 router.post('/signIn', loginUser)
 
+/**
+ * @swagger
+ * /session/sendEmail:
+ *   post:
+ *     tags:
+ *       - Session
+ *     summary: User login
+ *     description: User login in the system.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: User
+ *         in: body
+ *         description: User data to login.
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SendEmail'
+ *     responses:
+ *       200:
+ *         description: User successfully registered.
+ *         schema:
+ *           $ref: '#/definitions/StatusGeneralSuccessfully'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
 router.post('/sendEmail', sendEmailRecovey)
 
 /**
@@ -118,11 +151,14 @@ router.post('/sendEmail', sendEmailRecovey)
  *       status:
  *         type: boolean
  *         example: true
- *       success:
+ *       message:
  *         type: string
- *         example: message of successfully login
+ *         example: Successful login
+ *       token:
+ *         type: string
+ *         example: jojlkmaslknmfalknflkanflknalkfniubkajn98989897984
  *  
- *   notFoundUser:
+ *   NotFoundUserLogin:
  *     type: object
  *     properties:
  *      status:
@@ -130,9 +166,9 @@ router.post('/sendEmail', sendEmailRecovey)
  *        example: false
  *      message:
  *        type: string
- *        example: USer not found
+ *        example: Incorrect user or password
  * 
- *   statusGeneralSuccessfully:
+ *   StatusGeneralSuccessfully:
  *     type: object
  *     properties:
  *      status:
@@ -141,9 +177,10 @@ router.post('/sendEmail', sendEmailRecovey)
  *      message:
  *        type: string
  *        example: message of answer successfully
+ * 
  *   
- *   existsSession:
- *     type: boolean
+ *   ExistsSession:
+ *     type: object
  *     properties:
  *      status:
  *        type: boolean
@@ -151,11 +188,11 @@ router.post('/sendEmail', sendEmailRecovey)
  *      message:
  *        type: string
  *        example: Exist session
- *      user:
+ *      email:
  *        type: string
  *        example: example@gmail.com
  * 
- *   notExistSession:
+ *   NotExistSession:
  *     type: object
  *     properties:
  *      status:
@@ -177,7 +214,16 @@ router.post('/sendEmail', sendEmailRecovey)
  *        password:
  *         required: true
  *         type: string
- *         example: cristian       
+ *         example: cristian
+ * 
+ *   SendEmail:
+ *      type: object
+ *      properties:
+ *        email:
+ *         unique: true
+ *         required: true
+ *         type: string
+ *         example: cristian7@gmail.com         
 */
 
 
