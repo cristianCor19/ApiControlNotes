@@ -32,10 +32,10 @@ const userSchema = new Schema(
             required: true,
             unique: true
         },
-        Materias:[
+        Subjects:[
             {
                 type: Schema.Types.ObjectId,
-                ref : 'Materia'
+                ref : 'Subject'
             }
         ]
         
