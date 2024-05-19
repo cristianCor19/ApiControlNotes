@@ -31,7 +31,13 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true
-        }
+        },
+        Materias:[
+            {
+                type: Schema.Types.ObjectId,
+                ref : 'Materia'
+            }
+        ]
         
     },
     {
