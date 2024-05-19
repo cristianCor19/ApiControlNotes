@@ -86,7 +86,7 @@ router.get('/verifySession/:token', verifySession)
  *           $ref: '#/definitions/UserLogin'
  *     responses:
  *       200:
- *         description: User successfully registered.
+ *         description: User successfully login.
  *         schema:
  *           $ref: '#/definitions/SuccessfullyLogin'
  *       404:
@@ -108,20 +108,20 @@ router.post('/signIn', loginUser)
  *   post:
  *     tags:
  *       - Session
- *     summary: User login
- *     description: User login in the system.
+ *     summary: Send email to update password
+ *     description: Send email to email to update password.
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: User
  *         in: body
- *         description: User data to login.
+ *         description: Data to email .
  *         required: true
  *         schema:
  *           $ref: '#/definitions/SendEmail'
  *     responses:
  *       200:
- *         description: User successfully registered.
+ *         description: Send email successfully.
  *         schema:
  *           $ref: '#/definitions/StatusGeneralSuccessfully'
  *       500:
