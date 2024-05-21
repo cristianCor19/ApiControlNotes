@@ -32,7 +32,7 @@ const userSchema = new Schema(
             required: true,
             unique: true
         },
-        Subjects:[
+        subjects:[
             {
                 type: Schema.Types.ObjectId,
                 ref : 'Subject'
