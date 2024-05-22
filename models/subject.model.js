@@ -12,6 +12,12 @@ const subjectSchema = new Schema(
             type: Number,
             required: true,
         },
+        activities:[
+            {
+                type: Schema.Types.ObjectId,
+                ref : 'Activity',
+            }
+        ],
         user:{
             type: Schema.Types.ObjectId,
             ref: 'User'
