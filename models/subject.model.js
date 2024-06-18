@@ -8,8 +8,8 @@ const subjectSchema = new Schema(
             type: String,
             required: true,
         },
-        code:{
-            type: Number,
+        color: {
+            type: String,
             required: true,
         },
         activities:[
