@@ -23,7 +23,13 @@ const activitySchema = new Schema(
         qualification:{
             type: Number,
             required: false,
+            default: 0
         },
+        subject:{
+            type: Schema.Types.ObjectId,
+            ref: 'Subject',
+        }
+        ,
         state:{
             type: String,
             enum: ['pending', 'progress', 'completed'],
