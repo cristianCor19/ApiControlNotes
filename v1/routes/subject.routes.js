@@ -22,7 +22,7 @@ const router = Router()
  * /subject/saveSubject/:id:
  *   post:
  *     tags:
- *       - Subjescts
+ *       - Subjects
  *     summary: Register a new user
  *     description: Register a new user in the system.
  *     produces:
