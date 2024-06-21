@@ -19,12 +19,12 @@ const router = Router()
 
 /**
  * @swagger
- * /subject/saveSubject/:id:
+ * /subject/saveSubject/:token:
  *   post:
  *     tags:
  *       - Subjects
- *     summary: Register a new user
- *     description: Register a new user in the system.
+ *     summary: Register a new subject
+ *     description: Register a new subject in the system.
  *     produces:
  *       - application/json
  *     parameters:
@@ -54,7 +54,7 @@ const router = Router()
  *         
  *          
  */
-router.post('/saveSubject/:id', saveSubject)
+router.post('/saveSubject/:token', saveSubject)
 
 
 

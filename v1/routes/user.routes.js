@@ -1,4 +1,5 @@
 import {Router} from 'express'
+import { authRequired } from '../../middlewares/valideRequest.js'
 
 import {
     saveUser,
@@ -83,7 +84,7 @@ router.post('/registerUser', saveUser)
 
 /**
  * @swagger
- * /user/updateUser/:id:
+ * /user/updateUser/:token:
  *   put:
  *     tags:
  *       - Users
@@ -110,11 +111,11 @@ router.post('/registerUser', saveUser)
  *         
  *          
  */
-router.put('/updateUser/:id', updateUser)
+router.put('/updateUser/:token', updateUser)
 
 /**
  * @swagger
- * /user/deleteUser/:id:
+ * /user/deleteUser/:token:
  *   delete:
  *     tags:
  *       - Users
@@ -134,7 +135,7 @@ router.put('/updateUser/:id', updateUser)
  *         
  *          
  */
-router.delete('/deleteUser/:id', deleteUserGeneral)
+router.delete('/deleteUser/:token', deleteUserGeneral)
 
 
 

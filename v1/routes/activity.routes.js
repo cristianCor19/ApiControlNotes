@@ -18,7 +18,7 @@ const router = Router()
 
 /**
  * @swagger
- * /activity/saveSubject/:id:
+ * /activity/saveSubject/:idSubject:
  *   post:
  *     tags:
  *       - Activitys
