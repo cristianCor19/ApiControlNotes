@@ -51,7 +51,7 @@ export async function loginUser(req, res) {
 }
 
 export async function verifySession(req, res){
-    const token = req.params.token
+    const token = req.header('Authorization')
 
     if (!token) return res.status(401).json({
         message: 'Not exist authorization'

@@ -28,10 +28,15 @@ export async function getAllUsers() {
 
 export async function getProfileUser(req, res) {
     try {
-        const token = req.params.token;
-        const decodedToken = jwt.decode(token)
-        const idUser = decodedToken.id;
+        const idUser = req.params.id;
         const dataUser = await User.findById(idUser)
+
+        if(!dataUser) {
+            return res.status(404).json({
+                "status": false,
+                "message": "Not exist user"
+            })
+        }
 
         return res.status(200).json({
             status: true,
@@ -97,9 +102,7 @@ export async function saveUser(req, res) {
 
 export async function updateUser(req, res) {
     try {
-        const token = req.params.token;
-        const decodedToken = jwt.decode(token)
-        const idUser = decodedToken.id;
+        const idUser = req.params.id;
         const { name, lastname, email, carrier, phone } = req.body
         const updateUser = await User.findByIdAndUpdate(idUser,
             {
@@ -133,10 +136,7 @@ export async function updateUser(req, res) {
 
 export async function deleteUserGeneral(req, res) {
     try {
-        const token = req.params.token;
-        const decodedToken = jwt.decode(token)
-        const idUser = decodedToken.id;
-
+        const idUser = req.params.id
         const userDeleted = await User.findByIdAndDelete(idUser)
         const uidFirebase = userDeleted.uid
         const deleteFirebase = await admin.auth().deleteUser(uidFirebase)
