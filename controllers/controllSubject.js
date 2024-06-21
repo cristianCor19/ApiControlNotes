@@ -4,9 +4,7 @@ import User from '../models/user.model.js'
 
 export async function saveSubject(req, res) {
     try {
-        const token = req.params.token;
-        const decodedToken = jwt.decode(token)
-        const idUser = decodedToken.id;
+        const idUser = req.params.id;
         const { name, color } = req.body
 
 
