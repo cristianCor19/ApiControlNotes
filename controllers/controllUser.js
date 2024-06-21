@@ -2,8 +2,9 @@ import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import { genSalt, hash, compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, sendPasswordResetEmail} from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} from 'firebase/auth'
 import { configAdminFirebase } from "../firebase/configFirabaseAdmin.js";
+
 
 import admin from 'firebase-admin'
 admin.initializeApp({
@@ -27,9 +28,10 @@ export async function getAllUsers() {
 
 export async function getProfileUser(req, res) {
     try {
-        const decodeToken = jwt.decode(req.params.token)
-        const emailUser = decodeToken.email
-        const dataUser = await User.findOne({ email: emailUser})
+        const token = req.params.token;
+        const decodedToken = jwt.decode(token)
+        const idUser = decodedToken.id;
+        const dataUser = await User.findById(idUser)
 
         return res.status(200).json({
             status: true,
@@ -95,7 +97,9 @@ export async function saveUser(req, res) {
 
 export async function updateUser(req, res) {
     try {
-        const idUser = req.params.id
+        const token = req.params.token;
+        const decodedToken = jwt.decode(token)
+        const idUser = decodedToken.id;
         const { name, lastname, email, carrier, phone } = req.body
         const updateUser = await User.findByIdAndUpdate(idUser,
             {
@@ -129,10 +133,11 @@ export async function updateUser(req, res) {
 
 export async function deleteUserGeneral(req, res) {
     try {
-        console.log('within deleteUser');
-        const id = req.params.id
-        
-        const userDeleted = await User.findByIdAndDelete(id)
+        const token = req.params.token;
+        const decodedToken = jwt.decode(token)
+        const idUser = decodedToken.id;
+
+        const userDeleted = await User.findByIdAndDelete(idUser)
         const uidFirebase = userDeleted.uid
         const deleteFirebase = await admin.auth().deleteUser(uidFirebase)
 
