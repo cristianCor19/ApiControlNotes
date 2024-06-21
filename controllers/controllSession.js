@@ -1,37 +1,10 @@
-import User from '../models/user.model.js'
 import jwt from 'jsonwebtoken'
 import auth from '../firebase/configFirabase.js'
+import User from '../models/user.model.js'
 import {signInWithEmailAndPassword, signOut, onAuthStateChanged,sendPasswordResetEmail } from 'firebase/auth'
+import { createAccessToken } from '../libs/jwt.js';
 
-export async function verifySession(req, res) {
-    console.log('verifySession');
-    try {
-        const decodeToken = jwt.decode(req.params.token)
-        const emailUser = decodeToken.email
-        // console.log(decodeToken);
-        onAuthStateChanged(auth, () => {
-            
-            if (emailUser) {
-                return res.status(200).json({
-                    "status": true,
-                    "message": "Exist session",
-                    "user": emailUser,
-                });
-            } else {
-                return res.status(401).json({
-                    "status": false,
-                    "message": "No session exists"
-                });
-            }
-        });
-        
-    } catch (error) {
-        return res.status(500).json({
-            "status": false,
-            "error": error.message
-        });
-    }
-}
+
 
 export async function loginUser(req, res) {
     try {
@@ -39,20 +12,32 @@ export async function loginUser(req, res) {
         const userFound = await User.findOne({ email: email })
 
         if (!userFound) {
-            return res.status(404).json({
+            return res.status(401).json({
                 "status": false,
                 "message": "Incorrect user or password"
             })
         }
-        //sing in user to firebase authentication
+
         const loginFirebase = await signInWithEmailAndPassword(auth, email, password)
 
-        const idToken = loginFirebase._tokenResponse.idToken
+        if(!loginFirebase){
+            return res.status(401).json({
+                "status": false,
+                "message": "Incorrect user or password"
+            })
+        }
+
+        const payload = {
+            id: userFound.id,
+            uid: userFound.uid
+        }
+
+        const token = await createAccessToken(payload)
 
         return res.status(200).json({
             "status": true,
-            "message": "Successful login",
-            "token": idToken
+            token: token,
+            "message": "Successful login"
 
         })
 
@@ -63,6 +48,30 @@ export async function loginUser(req, res) {
         })
 
     }
+}
+
+export async function verifySession(req, res){
+    const token = req.params.token
+
+    if (!token) return res.status(401).json({
+        message: 'Not exist authorization'
+    })
+
+    jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
+        if (err) return res.status(401).json({
+            message: 'Not exist authorization'
+        })
+
+        const userFound = await User.findById(user.id)
+        if (!userFound) return res.status(401).json({
+            message: 'Not exist authorization user'
+        })
+
+        
+        return res.json({
+            "message": "exist session"
+        })
+    })
 }
 
 export async function signOutUser(req, res) {
