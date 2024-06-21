@@ -41,7 +41,7 @@ router.get('/signOut', signOutUser)
 
 /**
  * @swagger
- * /session/verifySession/:token:
+ * /session/verifySession:
  *   get:
  *     tags:
  *       - Session
@@ -65,7 +65,7 @@ router.get('/signOut', signOutUser)
  *         
  *          
  */
-router.get('/verifySession/:token', verifySession)
+router.get('/verifySession', verifySession)
 
 /**
  * @swagger

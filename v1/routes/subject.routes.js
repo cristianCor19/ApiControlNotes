@@ -19,7 +19,7 @@ const router = Router()
 
 /**
  * @swagger
- * /subject/saveSubject/:token:
+ * /subject/saveSubject/:idUser:
  *   post:
  *     tags:
  *       - Subjects
@@ -54,7 +54,7 @@ const router = Router()
  *         
  *          
  */
-router.post('/saveSubject/:token', saveSubject)
+router.post('/saveSubject/:id', saveSubject)
 
 
 

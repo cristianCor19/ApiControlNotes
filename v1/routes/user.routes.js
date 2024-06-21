@@ -21,7 +21,7 @@ const router = Router()
 
 /**
  * @swagger
- * /user/profileUser/:token:
+ * /user/profileUser/:id:
  *   get:
  *     tags:
  *       - Users
@@ -45,7 +45,7 @@ const router = Router()
  *         
  *          
  */
-router.get('/profileUser/:token', getProfileUser)
+router.get('/profileUser/:id', getProfileUser)
 
 
 
@@ -84,7 +84,7 @@ router.post('/registerUser', saveUser)
 
 /**
  * @swagger
- * /user/updateUser/:token:
+ * /user/updateUser/:id:
  *   put:
  *     tags:
  *       - Users
@@ -111,11 +111,11 @@ router.post('/registerUser', saveUser)
  *         
  *          
  */
-router.put('/updateUser/:token', updateUser)
+router.put('/updateUser/:id', updateUser)
 
 /**
  * @swagger
- * /user/deleteUser/:token:
+ * /user/deleteUser/:id:
  *   delete:
  *     tags:
  *       - Users
@@ -135,7 +135,7 @@ router.put('/updateUser/:token', updateUser)
  *         
  *          
  */
-router.delete('/deleteUser/:token', deleteUserGeneral)
+router.delete('/deleteUser/:id', deleteUserGeneral)
 
 
 
