@@ -22,7 +22,7 @@ const swaggerSpec = swaggerJSDoc(options)
 
 const swaggerDocs = (app) =>{
     app.use('/api-docs',  swaggerUi.serve, swaggerUi.setup(swaggerSpec))
- 
+
 }
 
 export default swaggerDocs
