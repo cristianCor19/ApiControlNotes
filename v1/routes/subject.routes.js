@@ -19,7 +19,7 @@ const router = Router()
 
 /**
  * @swagger
- * /subject/saveSubject/:idUser:
+ * /subject/saveSubject/{id}:
  *   post:
  *     tags:
  *       - Subjects
@@ -28,12 +28,20 @@ const router = Router()
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: User data id
+ *         example: 664a9811b65819ff404906c7
  *       - name: Subject
  *         in: body
  *         description: Subject data to register.
  *         required: true
  *         schema:
  *           $ref: '#/definitions/Subject'
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       201:
  *         description: User successfully registered.
