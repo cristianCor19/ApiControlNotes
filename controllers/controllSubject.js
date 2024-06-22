@@ -1,6 +1,52 @@
 import Subject from '../models/subject.model.js'
 import User from '../models/user.model.js'
 
+export async function getSubjects(req,res){
+    try {
+        const idUser = req.params.id;
+        const dataSubjects = await Subject.find({user: idUser})
+        return res.status(200).json({
+            "status": true,
+            data: dataSubjects,  
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
+
+export async function getSubject(req, res){
+    try {
+        const idSubject = req.params.id;
+        const dataSubject = await Subject.findById(idSubject)
+        if(!dataSubject) {
+            return res.status(404).json({
+                "status": false,
+                "message": "Not exist subject"
+            })
+        }
+
+        return res.status(200).json({
+            status: true,
+            message: "Subject found successfully",
+            data: {
+                _id: dataSubject._id,
+                name: dataSubject.name,
+                color: dataSubject.color,
+                activities: dataSubject.activities
+
+            }
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
+
 
 export async function saveSubject(req, res) {
     try {
