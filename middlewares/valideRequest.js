@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 export function authRequired(req, res, next) {
-    const token = req.params.token
+    const token = req.header('Authorization')
 
     if (!token) {
         return res.status(401).json({
