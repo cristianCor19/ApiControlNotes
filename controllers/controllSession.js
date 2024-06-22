@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import auth from '../firebase/configFirabase.js'
 import User from '../models/user.model.js'
-import {signInWithEmailAndPassword, signOut, onAuthStateChanged,sendPasswordResetEmail } from 'firebase/auth'
+import {signInWithEmailAndPassword,sendPasswordResetEmail } from 'firebase/auth'
 import { createAccessToken } from '../libs/jwt.js';
 
 
@@ -72,23 +72,6 @@ export async function verifySession(req, res){
             "message": "exist session"
         })
     })
-}
-
-export async function signOutUser(req, res) {
-    try {
-        await signOut(auth)
-
-        return res.status(200).json({
-            "status": true,
-            "message": "Successful sign out",
-        })
-    } catch (error) {
-        return res.status(500).json({
-            "status": false,
-            "error": error.message
-        })
-
-    }
 }
 
 export async function sendEmailRecovey(req, res){
