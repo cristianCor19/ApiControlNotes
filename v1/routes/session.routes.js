@@ -2,7 +2,6 @@ import { Router } from 'express'
 
 import {
     loginUser,
-    signOutUser,
     verifySession,
     sendEmailRecovey
 } from '../../controllers/controllSession.js'
@@ -17,27 +16,6 @@ const router = Router()
  *  description: Endpoints to session of users 
 */
 
-/**
- * @swagger
- * /session/signOut:
- *   get:
- *     tags:
- *       - Session
- *     summary: Close session 
- *     description: Method to close session
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description: Session succesfully closed.
- *         schema:
- *           $ref: '#/definitions/statusGeneralSuccessfully'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'     
- */
-router.get('/signOut', signOutUser)
 
 /**
  * @swagger
