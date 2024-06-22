@@ -21,7 +21,7 @@ const router = Router()
 
 /**
  * @swagger
- * /user/profileUser/:id:
+ * /user/profileUser/{id}:
  *   get:
  *     tags:
  *       - Users
@@ -29,6 +29,15 @@ const router = Router()
  *     description: obtain user data for profile.
  *     produces:
  *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: User data id
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: User successfully profile.
@@ -45,9 +54,7 @@ const router = Router()
  *         
  *          
  */
-router.get('/profileUser/:id', getProfileUser)
-
-
+router.get('/profileUser/:id', authRequired, getProfileUser)
 
 
 /**
@@ -68,10 +75,14 @@ router.get('/profileUser/:id', getProfileUser)
  *         schema:
  *           $ref: '#/definitions/User'
  *     responses:
- *       200:
+ *       201:
  *         description: User successfully registered.
  *         schema:
  *           $ref: '#/definitions/SuccessfullyRegister'
+ *       409:
+ *         description: Exist conflict
+ *         schema:
+ *           $ref: '#/definitions/ConflictEmail'
  *       500:
  *         description: Server error.
  *         schema:
@@ -84,7 +95,7 @@ router.post('/registerUser', saveUser)
 
 /**
  * @swagger
- * /user/updateUser/:id:
+ * /user/updateUser/{id}:
  *   put:
  *     tags:
  *       - Users
@@ -93,12 +104,20 @@ router.post('/registerUser', saveUser)
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: User data id
+ *         example: 664a9811b65819ff404906c7
  *       - name: User
  *         in: body
  *         description: User data for update.
  *         required: true
  *         schema:
  *           $ref: '#/definitions/UserUpdate'
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: User successfully update image.
@@ -115,7 +134,7 @@ router.put('/updateUser/:id', updateUser)
 
 /**
  * @swagger
- * /user/deleteUser/:id:
+ * /user/deleteUser/{id}:
  *   delete:
  *     tags:
  *       - Users
@@ -123,6 +142,15 @@ router.put('/updateUser/:id', updateUser)
  *     description: Delete user .
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: User data id
+ *         example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       200:
  *         description: Delete user succesfully.
@@ -142,6 +170,12 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
 
 /**
  * @swagger
+ * securityDefinitions:
+ *   bearerAuth:
+ *     type: apiKey
+ *     name: Authorization
+ *     in: header
+ * 
  * definitions:
  *   Error:
  *     type: object
@@ -158,7 +192,7 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *       status:
  *         type: boolean
  *         example: true
- *       success:
+ *       message:
  *         type: string
  *         example: message of successfully
  * 
@@ -192,6 +226,16 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *      message:
  *        type: string
  *        example: USer not found
+ *   
+ *   ConflictEmail:
+ *     type: object
+ *     properties:
+ *      status:
+ *        type: boolean
+ *        example: false
+ *      message:
+ *        type: string
+ *        example: Mail alredy registered
  * 
  *   statusGeneralSuccessfully:
  *     type: object
@@ -244,26 +288,25 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *   UserUpdate:
  *      type: object
  *      properties:
- *        idCardNumber:
- *         unique: true
- *         required: true
- *         type: string
- *         example: 1002478789
  *        name:
- *         required: true
+ *         required: false
  *         type: string
  *         example: dario  
  *        lastname: 
- *         required: true
+ *         required: false
  *         type: String
  *         example: gomez
  *        email: 
- *         required: true
+ *         required: false
  *         type: String 
  *         example: cordoba@gmail.com
+ *        carrrier: 
+ *         type: string
+ *         required: false
+ *         example: system engineer
  *        phone: 
- *         required: true
- *         type: String
+ *         required: false
+ *         type: number
  *         example: 3224788989
  * 
  *          
