@@ -1,6 +1,10 @@
 import {Router} from 'express'
+import { authRequired } from '../../middlewares/valideRequest.js'
+
 
 import {
+    getSubjects,
+    getSubject,
     saveSubject
 }from '../../controllers/controllSubject.js'
 
@@ -15,7 +19,73 @@ const router = Router()
  *  description: Endpoints for subjects
 */
 
+/**
+ * @swagger
+ * /subject/getSubjects/{id}:
+ *   get:
+ *     tags:
+ *       - Subjects
+ *     summary: Get subjects
+ *     description: Obtain data subjects.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: User data id
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get user successfully profile.
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullySubjects'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.get('/getSubjects/:id', authRequired,getSubjects)
 
+/**
+ * @swagger
+ * /subject/getSubject/{id}:
+ *   get:
+ *     tags:
+ *       - Subjects
+ *     summary: Get subject
+ *     description: Obtain data subject.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: Subject data id
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get subject successfully .
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullySubject'
+ *       404:
+ *         description: Not found subject.
+ *         schema:
+ *           $ref: '#/definitions/notFoundSubject'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.get('/getSubject/:id',authRequired,getSubject)
 
 /**
  * @swagger
@@ -62,7 +132,7 @@ const router = Router()
  *         
  *          
  */
-router.post('/saveSubject/:id', saveSubject)
+router.post('/saveSubject/:id',authRequired, saveSubject)
 
 
 
@@ -98,7 +168,7 @@ router.post('/saveSubject/:id', saveSubject)
  *        type: string
  *        example: Missing required parameters
  *  
- *   notFoundUser:
+ *   notFoundSubject:
  *     type: object
  *     properties:
  *      status:
@@ -117,7 +187,48 @@ router.post('/saveSubject/:id', saveSubject)
  *      message:
  *        type: string
  *        example: message of answer successfully
- *    
+ *
+ *   SuccessfullySubject: 
+ *     type: object
+ *     properties:
+ *       status:
+ *         type: boolean
+ *         example: true
+ *       data: 
+ *         type: object
+ *         example: {
+ *          "_id": "4242aff2",
+ *           "name": "Calculo I",
+ *           "color": "red",
+ *          }
+ *       message:
+ *         type: string
+ *         example: User found successfully
+ *
+ *   SuccessfullySubjects: 
+ *     type: object
+ *     properties:
+ *       status:
+ *         type: boolean
+ *         example: true
+ *       data: 
+ *         type: array
+ *         items:
+ *         example: [
+ *           {
+ *             "_id": "4242aff2",
+ *             "name": "Calculo",
+ *             "color": "Red"
+ *           },
+ *           {
+ *             "_id": "4242aff3",
+ *             "name": "Algebra",
+ *             "color": "Blue"
+ *           }
+ *         ]
+ *       message:
+ *         type: string
+ *         example: User found successfully 
  * 
  *   Subject:
  *     type: object
