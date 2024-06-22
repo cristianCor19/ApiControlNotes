@@ -27,6 +27,12 @@ const router = Router()
  *     produces:
  *       - application/json
  *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: Subject data id
+ *         example: 664a9811b65819ff404906c7
  *       - name: Activity
  *         in: body
  *         description: Activity data to register.
