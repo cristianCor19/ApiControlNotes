@@ -30,7 +30,7 @@ export async function getProfileUser(req, res) {
     try {
         const idUser = req.params.id;
         const dataUser = await User.findById(idUser)
-
+        
         if(!dataUser) {
             return res.status(404).json({
                 "status": false,
@@ -86,9 +86,8 @@ export async function saveUser(req, res) {
                 "message": 'User saved successfully'
             })
         } else {
-            return res.status(500).json({
+            return res.status(409).json({
                 "status": false,
-                "error": error,
                 "message": "Mail alredy registered"
             })
         }
