@@ -1,6 +1,10 @@
 import {Router} from 'express'
+import { authRequired } from '../../middlewares/valideRequest.js'
+
 
 import {
+    getActivitys,
+    getActivity,
     saveActivity
 }from '../../controllers/controllActivity.js'
 
@@ -14,11 +18,77 @@ const router = Router()
  *  description: Endpoints for activitys
 */
 
-
+/**
+ * @swagger
+ * /activity/getActivitys/{id}:
+ *   get:
+ *     tags:
+ *       - Activitys
+ *     summary: Get activitys details
+ *     description: Obtain data activitys.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: Subject data id
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get activitys successfully .
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullyActivitys'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.get('/getActivitys/:id', authRequired, getActivitys)
 
 /**
  * @swagger
- * /activity/saveSubject/:idSubject:
+ * /activity/getActivity/{id}:
+ *   get:
+ *     tags:
+ *       - Activitys
+ *     summary: Get activity
+ *     description: Obtain data activity.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: Activity data id
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get Activity successfully .
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullyActivity'
+ *       404:
+ *         description: Not found activity.
+ *         schema:
+ *           $ref: '#/definitions/notFound'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.get('/getActivity/:id', authRequired, getActivity)
+
+/**
+ * @swagger
+ * /activity/saveActivity/{id}:
  *   post:
  *     tags:
  *       - Activitys
@@ -55,11 +125,9 @@ const router = Router()
  *       500:
  *         description: Server error.
  *         schema:
- *           $ref: '#/definitions/Error'
-          
+ *           $ref: '#/definitions/Error'       
  *          
  */
-
 router.post('/saveActivity/:id', saveActivity)
 
 /**
@@ -83,7 +151,61 @@ router.post('/saveActivity/:id', saveActivity)
  *       message:
  *         type: string
  *         example: message of successfully activity
- * 
+  *   SuccessfullyActivitys: 
+ *     type: object
+ *     properties:
+ *       status:
+ *         type: boolean
+ *         example: true
+ *       data: 
+ *         type: array
+ *         items:
+ *         example: [
+ *           {
+ *             "_id": "4242aff2",
+ *             "name": "Primer parcial",
+ *             "dateEntry": "2024-05-18T00:00:00.000Z",
+ *             "dateCreation": "2024-06-23T03:03:09.000Z",
+ *             "percent": 30,
+ *             "qualification": 0,
+ *             "subject": "667657e7217f8a7b09890365", 
+ *             "state": "pending",
+ *           },
+ *           {
+ *             "_id": "4242aff2",
+ *             "name": "Primer parcial",
+ *             "dateEntry": "2024-05-18T00:00:00.000Z",
+ *             "dateCreation": "2024-06-23T03:03:09.000Z",
+ *             "percent": 30,
+ *             "qualification": 0,
+ *             "subject": "667657e7217f8a7b09890365", 
+ *             "state": "pending",
+ *           },
+ *         ]
+ *       message:
+ *         type: string
+ *         example: Activitys found successfully
+  *   SuccessfullyActivity: 
+ *     type: object
+ *     properties:
+ *       status:
+ *         type: boolean
+ *         example: true
+ *       data: 
+ *         type: object
+ *         example: {
+  *            "_id": "4242aff2",
+ *             "name": "Primer parcial",
+ *             "dateEntry": "2024-05-18T00:00:00.000Z",
+ *             "dateCreation": "2024-06-23T03:03:09.000Z",
+ *             "percent": 30,
+ *             "qualification": 0,
+ *             "subject": "667657e7217f8a7b09890365", 
+ *             "state": "pending",
+ *          }
+ *       message:
+ *         type: string
+ *         example: Activity found successfully 
  *   MissingParameters:
  *     type: object
  *     properties:
@@ -102,7 +224,7 @@ router.post('/saveActivity/:id', saveActivity)
  *        example: false
  *      message:
  *        type: string
- *        example: Subject not found
+ *        example: Activity not found
  * 
  *   statusGeneralSuccessfully:
  *     type: object
@@ -124,8 +246,8 @@ router.post('/saveActivity/:id', saveActivity)
  *         description: Enter activity name
  *         example: First partial
  *       dateEntry:
- *         type: Date
- *         required: true
+ *         type: date
+ *         required: false
  *         description: Enter delivery date
  *         example: 2024-05-18
  *       percent: 
