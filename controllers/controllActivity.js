@@ -1,9 +1,56 @@
 import moment from 'moment-timezone'
-
 import Subject from '../models/subject.model.js'
 import Activity from '../models/activity.model.js'
 
 
+export async function getActivitys(req,res){
+    try {
+        const idSubject = req.params.id;
+        const dataActivitys = await Activity.find({subject: idSubject})
+        return res.status(200).json({
+            "status": true,
+            data: dataActivitys,  
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
+
+export async function getActivity(req, res){
+    try {
+        const idActivity = req.params.id;
+        console.log(idActivity);
+        const dataActivity = await Activity.findById(idActivity)
+        if(!dataActivity) {
+            return res.status(404).json({
+                "status": false,
+                "message": "Not exist Activity"
+            })
+        }
+
+        return res.status(200).json({
+            status: true,
+            message: "Activity found successfully",
+            data: {
+                _id: dataActivity._id,
+                name: dataActivity.name,
+                dateEntry: dataActivity.dateEntry,
+                dateCreation: dataActivity.dateCreation,
+                percent: dataActivity.percent,
+                qualification: dataActivity.qualification,
+                state: dataActivity.state
+            }
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
 
 export async function saveActivity(req, res) {
     try {
@@ -32,11 +79,10 @@ export async function saveActivity(req, res) {
             name,
             dateEntry: parsedDateEntry,
             percent,
-            dateCreation: currentDate
+            dateCreation: currentDate,
+            subject: idSubject
         })
 
-
-        //save activity in subject
         newActivity.subjectFound = idSubject
         subjectFound.activities.push(newActivity)
         await subjectFound.save()
@@ -51,8 +97,7 @@ export async function saveActivity(req, res) {
     } catch (error) {
         return res.status(500).json({
             "status": false,
-            "error": error.message,
-            "message": "Error saving activity"
+            "error": error.message
         })
     }
 }
