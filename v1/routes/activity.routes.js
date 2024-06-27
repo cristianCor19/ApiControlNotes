@@ -5,7 +5,8 @@ import { authRequired } from '../../middlewares/valideRequest.js'
 import {
     getActivitys,
     getActivity,
-    saveActivity
+    saveActivity,
+    updateActivity
 }from '../../controllers/controllActivity.js'
 
 
@@ -129,6 +130,46 @@ router.get('/getActivity/:id', authRequired, getActivity)
  *          
  */
 router.post('/saveActivity/:id', saveActivity)
+
+
+/**
+ * @swagger
+ * /activity/updateActivity/{id}:
+ *   put:
+ *     tags:
+ *       - Activitys
+ *     summary: Activity update  
+ *     description: Activity update information data.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: Activity data id
+ *         example: 66779059a92281b600e0dd06
+ *       - name: Activity
+ *         in: body
+ *         description: Activity data for update.
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/updateActivity'
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Activity successfully update data.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
+router.put('/updateActivity/:id', updateActivity)
 
 /**
  * @swagger
@@ -255,6 +296,30 @@ router.post('/saveActivity/:id', saveActivity)
  *         required: true
  *         description: Enter the percentage of activity
  *         example: 30
+ * 
+ *   updateActivity:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *         required: false
+ *         description: Enter activity name
+ *         example: First partial
+ *       percent:
+ *         type: number
+ *         required: false
+ *         description: Enter the percentage of the activity
+ *         example: 30
+ *       qualification: 
+ *         type: number
+ *         required: false
+ *         description: Enter the qualification of the activity 
+ *         example: 4.0
+ *       state:
+ *         type: string
+ *         required: false
+ *         description: Enter the state of the activity
+ *         example: completed
  *          
  */
 
