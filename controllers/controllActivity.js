@@ -6,7 +6,8 @@ import Activity from '../models/activity.model.js'
 export async function getActivitys(req,res){
     try {
         const idSubject = req.params.id;
-        const dataActivitys = await Activity.find({subject: idSubject})
+        const state = req.params.state;
+        const dataActivitys = await Activity.find({subject: idSubject, state: state})
         return res.status(200).json({
             "status": true,
             data: dataActivitys,  
