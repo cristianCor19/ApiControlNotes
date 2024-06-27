@@ -102,4 +102,31 @@ export async function saveActivity(req, res) {
     }
 }
 
+export async function updateActivity(req, res) {
+    try {
+        const idActivity = req.params.id;
+        const { name, percent, qualification, state } = req.body
+        const updateActivity = await Activity.findByIdAndUpdate(idActivity,
+            {
+                name: name,
+                percent: percent,
+                qualification: qualification,
+                state: state
+            },
+
+            { new: true }
+        )
+        
+        return res.status(200).json({
+            "status": true,
+            "message": 'Update activity with successfully'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error
+        })
+    }
+}
+
 
