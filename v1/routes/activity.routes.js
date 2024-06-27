@@ -116,6 +116,8 @@ router.get('/getActivity/:id', authRequired, getActivity)
  *         required: true
  *         schema:
  *           $ref: '#/definitions/Activity'
+ *     security:
+ *      - bearerAuth: []
  *     responses:
  *       201:
  *         description: Activity successfully registered.
@@ -135,7 +137,7 @@ router.get('/getActivity/:id', authRequired, getActivity)
  *           $ref: '#/definitions/Error'       
  *          
  */
-router.post('/saveActivity/:id', saveActivity)
+router.post('/saveActivity/:id', authRequired, saveActivity)
 
 
 /**
