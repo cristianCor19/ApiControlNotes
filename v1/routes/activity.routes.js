@@ -20,7 +20,7 @@ const router = Router()
 
 /**
  * @swagger
- * /activity/getActivitys/{id}:
+ * /activity/getActivitys/{id}/{state}:
  *   get:
  *     tags:
  *       - Activitys
@@ -35,6 +35,12 @@ const router = Router()
  *          type: string
  *          description: Subject data id
  *          example: 664a9811b65819ff404906c7
+ *        - name: state
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: State of the activity 
+ *          example: 664a9811b65819ff404906c7
  *     security:
  *      - bearerAuth: []
  *     responses:
@@ -48,7 +54,7 @@ const router = Router()
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getActivitys/:id', authRequired, getActivitys)
+router.get('/getActivitys/:id/:state', authRequired, getActivitys)
 
 /**
  * @swagger
