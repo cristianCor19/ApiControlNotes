@@ -5,7 +5,8 @@ import { authRequired } from '../../middlewares/valideRequest.js'
 import {
     getSubjects,
     getSubject,
-    saveSubject
+    saveSubject,
+    updateSubject,
 }from '../../controllers/controllSubject.js'
 
 
@@ -134,7 +135,44 @@ router.get('/getSubject/:id',authRequired,getSubject)
  */
 router.post('/saveSubject/:id',authRequired, saveSubject)
 
-
+/**
+ * @swagger
+ * /subject/updateSubject/{id}:
+ *   put:
+ *     tags:
+ *       - Subjects
+ *     summary: Subject update  
+ *     description: Subject update information data.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: Subject data id
+ *         example: 667657e7217f8a7b09890365
+ *       - name: Subject
+ *         in: body
+ *         description: subject data for update.
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/updateSubject'
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Subject successfully update data.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *         
+ *          
+ */
+router.put('/updateSubject/:id',authRequired, updateSubject)
 
 /**
  * @swagger
@@ -241,6 +279,19 @@ router.post('/saveSubject/:id',authRequired, saveSubject)
  *       color:
  *         type: string
  *         required: true
+ *         description: Enter color subject
+ *         example: Orange
+ *   updateSubject:
+ *     type: object
+ *     properties:
+ *       name:
+ *         type: string
+ *         required: false
+ *         description: Enter subject name
+ *         example: Calculo I
+ *       color:
+ *         type: string
+ *         required: false
  *         description: Enter color subject
  *         example: Orange
  *     
