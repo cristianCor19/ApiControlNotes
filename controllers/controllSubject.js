@@ -93,3 +93,28 @@ export async function saveSubject(req, res) {
         })
     }
 }
+
+export async function updateSubject(req, res) {
+    try {
+        const idSubject = req.params.id;
+        const { name, color } = req.body
+        const updateSubject = await Subject.findByIdAndUpdate(idSubject,
+            {
+                name: name,
+                color: color,
+            },
+
+            { new: true }
+        )
+        
+        return res.status(200).json({
+            "status": true,
+            "message": 'Update subject with successfully'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error
+        })
+    }
+}
