@@ -130,4 +130,42 @@ export async function updateActivity(req, res) {
     }
 }
 
+export async function deleteActivity(req, res) {
+    try {
+        const idActivity = req.params.id
+        const activityDeleted = await Activity.findByIdAndDelete(idActivity)
+        if(!activityDeleted){
+            return res.status(404).json({
+                "status": "false",
+                "message": "Activity not found"
+            })
+        }
+
+        const idSubject = activityDeleted.subject
+        const subjectFound = await Subject.findById(idSubject)
+        if(!subjectFound){
+            return res.status(404).json({
+                "status": "false",
+                "message": "Subject not found"
+            })
+        }
+       
+
+        subjectFound.activities = subjectFound.activities.filter(
+            activity => activity.toString() !== idActivity
+        )
+        await subjectFound.save()
+        
+
+        return res.status(200).json({
+            "status": true,
+            "message": 'User succcesfully deleted'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
+        })
+    }
+}
 
