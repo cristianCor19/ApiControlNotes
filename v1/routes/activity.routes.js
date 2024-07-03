@@ -6,7 +6,8 @@ import {
     getActivitys,
     getActivity,
     saveActivity,
-    updateActivity
+    updateActivity,
+    deleteActivity
 }from '../../controllers/controllActivity.js'
 
 
@@ -137,8 +138,7 @@ router.get('/getActivity/:id', authRequired, getActivity)
  *           $ref: '#/definitions/Error'       
  *          
  */
-router.post('/saveActivity/:id', authRequired, saveActivity)
-
+router.post('/saveActivity/:id', authRequired,saveActivity)
 
 /**
  * @swagger
@@ -174,10 +174,45 @@ router.post('/saveActivity/:id', authRequired, saveActivity)
  *         description: Server error.
  *         schema:
  *           $ref: '#/definitions/Error'
- *         
  *          
  */
-router.put('/updateActivity/:id', updateActivity)
+router.put('/updateActivity/:id', authRequired,updateActivity)
+
+/**
+ * @swagger
+ * /activity/deleteActivity/{id}:
+ *   delete:
+ *     tags:
+ *       - Activitys
+ *     summary: Activity delete  
+ *     description: Activity delete information data.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: Activity data id
+ *         example: 66779059a92281b600e0dd06
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Activity successfully update data.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       404:
+ *         description: No activity data has been found..
+ *         schema:
+ *           $ref: '#/definitions/notFound'    
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.delete('/deleteActivity/:id', authRequired,deleteActivity)
 
 /**
  * @swagger
