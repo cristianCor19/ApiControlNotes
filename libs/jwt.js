@@ -9,7 +9,7 @@ export async function createAccessToken(payload){
                 id, uid
             },
             process.env.TOKEN_SECRET,
-            { expiresIn: "1d", algorithm: "HS512" }
+            { expiresIn: "365d", algorithm: "HS512" }
         )
         return token
     } catch (error) {
