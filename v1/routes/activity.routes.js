@@ -363,6 +363,12 @@ router.delete('/deleteActivity/:id', authRequired,deleteActivity)
  *         required: false
  *         description: Enter the state of the activity
  *         example: completed
+ *       dateEntry:
+ *         type: date
+ *         required: false
+ *         description: Update delivery date
+ *         example: 2024-05-18
+ * 
  *          
  */
 
