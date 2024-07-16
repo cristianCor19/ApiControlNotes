@@ -1,5 +1,7 @@
 import {Router} from 'express'
-import { authRequired } from '../../middlewares/valideRequest.js'
+import { authRequired } from '../../middlewares/valideToken.js'
+import { registerUserShema } from '../../schemas/user.schema.js'
+import { validateSchema } from '../../middlewares/valideRequest.js'
 
 import {
     saveUser,
@@ -90,7 +92,7 @@ router.get('/profileUser/:id', authRequired, getProfileUser)
  *         
  *          
  */
-router.post('/registerUser', saveUser)
+router.post('/registerUser', validateSchema(registerUserShema), saveUser)
 
 
 /**
