@@ -106,13 +106,14 @@ export async function saveActivity(req, res) {
 export async function updateActivity(req, res) {
     try {
         const idActivity = req.params.id;
-        const { name, percent, qualification, state } = req.body
+        const { name, percent, qualification, state, dateEntry } = req.body
         const updateActivity = await Activity.findByIdAndUpdate(idActivity,
             {
                 name: name,
                 percent: percent,
                 qualification: qualification,
-                state: state
+                state: state,
+                dateEntry: dateEntry
             },
 
             { new: true }
