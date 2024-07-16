@@ -1,23 +1,9 @@
-import jwt from 'jsonwebtoken'
 
-export function authRequired(req, res, next) {
-    const token = req.header('Authorization')
-
-    if (!token) {
-        return res.status(401).json({
-            "message": "Not exist token, denied autorization"
-        })
-    }
-
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) =>{
-        if(err){
-            return res.status(403).json({
-                "message": "Invalid token"
-            })
-        }
-
-        req.user = user
-
+export const validateSchema = (schema) => (req, res, next) => {
+    try {
+        schema.parse(req.body)
         next()
-    })
+    } catch (error) {
+        return res.status(400).json(error.errors.map(error => error.message))
+    }
 }
