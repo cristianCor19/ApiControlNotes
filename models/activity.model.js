@@ -28,8 +28,11 @@ const activitySchema = new Schema(
         subject:{
             type: Schema.Types.ObjectId,
             ref: 'Subject',
-        }
-        ,
+        },
+        idUser:{
+            type: String,
+            required: false,
+        },
         state:{
             type: String,
             enum: ['pending', 'progress', 'completed'],
