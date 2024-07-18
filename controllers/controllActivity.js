@@ -19,6 +19,22 @@ export async function getActivitys(req,res){
         })
     }
 }
+export async function getActivitysUser(req,res){
+    try {
+        const idUser = req.params.id;
+        const state = req.params.state;
+        const dataActivitys = await Activity.find({idUser: idUser, state: state})
+        return res.status(200).json({
+            "status": true,
+            data: dataActivitys,  
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
 
 export async function getActivity(req, res){
     try {
@@ -73,6 +89,9 @@ export async function saveActivity(req, res) {
             })
         }
 
+        const idUser = subjectFound.user;
+        
+
         const parsedDateEntry = new Date(dateEntry)
     
         const currentDate =  moment.tz('America/Bogota').format()
@@ -81,7 +100,8 @@ export async function saveActivity(req, res) {
             dateEntry: parsedDateEntry,
             percent,
             dateCreation: currentDate,
-            subject: idSubject
+            subject: idSubject,
+            idUser: idUser,
         })
 
         newActivity.subjectFound = idSubject
