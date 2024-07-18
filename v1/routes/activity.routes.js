@@ -4,6 +4,7 @@ import { authRequired } from '../../middlewares/valideToken.js'
 
 import {
     getActivitys,
+    getActivitysUser,
     getActivity,
     saveActivity,
     updateActivity,
@@ -57,6 +58,44 @@ const router = Router()
  *          
  */
 router.get('/getActivitys/:id/:state', authRequired, getActivitys)
+
+/**
+ * @swagger
+ * /activity/getActivitysUser/{id}/{state}:
+ *   get:
+ *     tags:
+ *       - Activitys
+ *     summary: Get activitys details for user
+ *     description: Obtain data activitys for user.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: User data id
+ *          example: 664a9811b65819ff404906c7
+ *        - name: state
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: State of the activity 
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get activitys successfully for user.
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullyActivitys'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.get('/getActivitysUser/:id/:state', authRequired, getActivitysUser)
 
 /**
  * @swagger
