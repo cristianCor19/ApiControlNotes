@@ -21,17 +21,23 @@ const userSchema = new Schema(
         }, 
         carrier:{
             type: String,
-            required: true,
+            required: false,
         },
         phone: {
             type: Number,
-            unique: true,
-            required: true,
+            required: false,
         },
-        secrets:{
-           type: String,
-           required: true, 
-        }
+        uid:{
+            type: String,
+            required: true,
+            unique: true
+        },
+        subjects:[
+            {
+                type: Schema.Types.ObjectId,
+                ref : 'Subject'
+            }
+        ]
         
     },
     {

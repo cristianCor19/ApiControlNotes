@@ -12,7 +12,7 @@ const options = {
         basePath: '/'
     },
     apis: [
-        './routes/*.js'
+        './v1/routes/*.js'
     ],
 }
 
@@ -21,8 +21,13 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options)
 
 const swaggerDocs = (app) =>{
-    app.use('/api-docs',  swaggerUi.serve, swaggerUi.setup(swaggerSpec))
- 
+    const swaggerOptions = {
+        swaggerOptions: {
+            defaultModelsExpandDepth: -1, 
+        },
+    };
+    app.use('/api-docs',  swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerOptions))
+
 }
 
 export default swaggerDocs
