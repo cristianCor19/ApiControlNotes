@@ -19,6 +19,23 @@ export async function getActivitys(req,res){
         })
     }
 }
+
+export async function getActivitysSubject(req,res){
+    try {
+        const idSubject = req.params.id;
+        const dataActivitys = await Activity.find({subject: idSubject})
+        return res.status(200).json({
+            "status": true,
+            data: dataActivitys,  
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
+
 export async function getActivitysUser(req,res){
     try {
         const idUser = req.params.id;
