@@ -53,6 +53,23 @@ export async function getActivitysUser(req,res){
     }
 }
 
+export async function getActivitysToIdUser(req,res){
+    try {
+        const idUser = req.params.id;
+        console.log(idUser);
+        const dataActivitys = await Activity.find({idUser: idUser})
+        return res.status(200).json({
+            "status": true,
+            data: dataActivitys,  
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
+        })
+    }
+}
+
 export async function getActivity(req, res){
     try {
         const idActivity = req.params.id;
