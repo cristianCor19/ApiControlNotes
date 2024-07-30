@@ -1,5 +1,6 @@
 import Subject from '../models/subject.model.js'
 import User from '../models/user.model.js'
+import Activity from '../models/activity.model.js'
 
 export async function getSubjects(req,res){
     try {
@@ -115,6 +116,49 @@ export async function updateSubject(req, res) {
         return res.status(500).json({
             "status": false,
             "message": error
+        })
+    }
+}
+
+
+export async function deleteSubject(req, res) {
+    try {
+        const idSubject = req.params.id
+        
+        const subjectDeleted = await Subject.findByIdAndDelete(idSubject)
+        if(!subjectDeleted){
+            return res.status(404).json({
+                "status": "false",
+                "message": "Subject not found"
+            })
+        }
+
+        const activitysDelete = await Activity.deleteMany({subject: idSubject});
+
+        const idUser = subjectDeleted.user
+        const userFound = await User.findById(idUser)
+        if(!userFound){
+            return res.status(404).json({
+                "status": "false",
+                "message": "User not found"
+            })
+        }
+       
+
+        userFound.subjects = userFound.subjects.filter(
+            subject => subject.toString() !== idSubject
+        )
+        await userFound.save()
+        
+
+        return res.status(200).json({
+            "status": true,
+            "message": 'Subject succcesfully deleted'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error
         })
     }
 }

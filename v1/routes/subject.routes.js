@@ -7,6 +7,7 @@ import {
     getSubject,
     saveSubject,
     updateSubject,
+    deleteSubject,
 }from '../../controllers/controllSubject.js'
 
 
@@ -173,6 +174,42 @@ router.post('/saveSubject/:id',authRequired, saveSubject)
  *          
  */
 router.put('/updateSubject/:id',authRequired, updateSubject)
+
+/**
+ * @swagger
+ * /subject/deleteSubject/{id}:
+ *   delete:
+ *     tags:
+ *       - Subjects
+ *     summary: Subject delete  
+ *     description: Subject delete information data.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         type: string
+ *         description: Subject data id
+ *         example: 66779059a92281b600e0dd06
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Subject successfully delete data.
+ *         schema:
+ *           $ref: '#/definitions/statusGeneralSuccessfully'
+ *       404:
+ *         description: No Sbuject data has been found..
+ *         schema:
+ *           $ref: '#/definitions/notFound'    
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.delete('/deleteSubject/:id', authRequired, deleteSubject)
 
 /**
  * @swagger
