@@ -1,7 +1,7 @@
 import {Router} from 'express'
 import { authRequired } from '../../middlewares/valideToken.js'
 import { registerUserShema } from '../../schemas/user.schema.js'
-import { validateSchema } from '../../middlewares/valideRequest.js'
+import { validateRequestBody } from '../../middlewares/valideRequest.js'
 
 import {
     saveUser,
@@ -23,7 +23,7 @@ const router = Router()
 
 /**
  * @swagger
- * /user/profileUser/{id}:
+ * /user/profile-user:
  *   get:
  *     tags:
  *       - Users
@@ -31,13 +31,6 @@ const router = Router()
  *     description: obtain user data for profile.
  *     produces:
  *       - application/json
- *     parameters:
- *        - name: id
- *          in: path
- *          required: true
- *          type: string
- *          description: User data id
- *          example: 664a9811b65819ff404906c7
  *     security:
  *      - bearerAuth: []
  *     responses:
@@ -56,12 +49,12 @@ const router = Router()
  *         
  *          
  */
-router.get('/profileUser/:id', authRequired, getProfileUser)
+router.get('/profile-user', authRequired, getProfileUser)
 
 
 /**
  * @swagger
- * /user/registerUser:
+ * /user/register-user:
  *   post:
  *     tags:
  *       - Users
@@ -92,7 +85,7 @@ router.get('/profileUser/:id', authRequired, getProfileUser)
  *         
  *          
  */
-router.post('/registerUser', validateSchema(registerUserShema), saveUser)
+router.post('/register-user', validateRequestBody(registerUserShema), saveUser)
 
 
 /**
@@ -260,7 +253,7 @@ router.delete('/deleteUser/:id', deleteUserGeneral)
  *         example: Cristian
  *       lastname:
  *         type: string
- *         required: true
+ *         required: false
  *         description: Enter user lastname
  *         example: Cordoba
  *       email:

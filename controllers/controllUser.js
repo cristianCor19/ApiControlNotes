@@ -1,5 +1,5 @@
 import User from '../models/user.model.js'
-import jwt from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 import { genSalt, hash, compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} from 'firebase/auth'
@@ -28,7 +28,8 @@ export async function getAllUsers() {
 
 export async function getProfileUser(req, res) {
     try {
-        const idUser = req.params.id;
+        const idUser = req.user.id;
+
         const dataUser = await User.findById(idUser)
         
         if(!dataUser) {
@@ -61,21 +62,24 @@ export async function getProfileUser(req, res) {
 
 export async function saveUser(req, res) {
     try {
+        console.log('arrive');
+        
+        const {name, lastname, email, carrier,password, confirmPassword} = req.body
 
-        const {name, lastname, email, carrier,password, phone} = req.body
+        if(password !== confirmPassword) {
+            return res.status(400).json({
+                "status": false,
+                "message": "Passwords do not match"
+            })
+        }
+        
         const userFound = await User.findOne({ email: email})
         
-    
-
         if(!userFound) {
             const registerFirabase = await createUserWithEmailAndPassword(auth,email, password)
             const uidUser = registerFirabase.user.uid;
             const newUser = new User({
-                name,
-                lastname,
                 email,
-                carrier,
-                phone,
                 uid: uidUser,
             })
 
