@@ -8,6 +8,7 @@ import { createAccessToken } from '../libs/jwt.js';
 
 export async function loginUser(req, res) {
     try {
+        
         const { email, password } = req.body
         const userFound = await User.findOne({ email: email })
 
@@ -51,11 +52,20 @@ export async function loginUser(req, res) {
 }
 
 export async function verifySession(req, res){
-    const token = req.header('Authorization')
+    const authHeader = req.header('Authorization')
+    
 
-    if (!token) return res.status(401).json({
+    if (!authHeader) return res.status(401).json({
         message: 'Not exist authorization'
     })
+
+    if(!authHeader.startsWith('Bearer ')){
+        return res.status(401).json({
+            "message": "Invalid authorization format. Must use Bearer scheme"
+        })
+    }
+
+    const token = authHeader.slice(7);
 
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
         if (err) return res.status(401).json({
@@ -69,7 +79,13 @@ export async function verifySession(req, res){
 
         
         return res.json({
-            "message": "exist session"
+            "message": "exist session",
+            "data": {
+                id: userFound._id,
+                name: userFound.name,
+                lastname: userFound.lastname,
+                email: userFound.email
+            }
         })
     })
 }

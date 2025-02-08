@@ -43,7 +43,7 @@ const router = Router()
  *         
  *          
  */
-router.get('/verifySession', verifySession)
+router.get('/verify-session', verifySession)
 
 /**
  * @swagger
