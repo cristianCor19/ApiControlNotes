@@ -2,8 +2,7 @@ import moment from 'moment-timezone'
 import Subject from '../models/subject.model.js'
 import Activity from '../models/activity.model.js'
 
-
-export async function getActivitys(req,res){
+export async function getActivitiesSubjectByState(req,res){
     try {
         const idSubject = req.params.id;
         const state = req.params.state;
@@ -38,9 +37,17 @@ export async function getActivitysSubject(req,res){
 
 export async function getActivitysUser(req,res){
     try {
-        const idUser = req.params.id;
-        const state = req.params.state;
-        const dataActivitys = await Activity.find({idUser: idUser, state: state})
+        const idUser = req.user.id;
+        const state = req.query.state;
+       
+
+        let filter = {idUser: idUser};
+        if(state && state !=="all"){
+            filter.state = state;
+        } 
+        
+        const dataActivitys = await Activity.find(filter)
+
         return res.status(200).json({
             "status": true,
             data: dataActivitys,  
@@ -53,27 +60,10 @@ export async function getActivitysUser(req,res){
     }
 }
 
-export async function getActivitysToIdUser(req,res){
-    try {
-        const idUser = req.params.id;
-        console.log(idUser);
-        const dataActivitys = await Activity.find({idUser: idUser})
-        return res.status(200).json({
-            "status": true,
-            data: dataActivitys,  
-        })
-    } catch (error) {
-        return res.status(500).json({
-            "status": false,
-            "message": error.message
-        })
-    }
-}
-
-export async function getActivity(req, res){
+export async function getActivityById(req, res){
     try {
         const idActivity = req.params.id;
-        console.log(idActivity);
+        console.log("arrive by id");
         const dataActivity = await Activity.findById(idActivity)
         if(!dataActivity) {
             return res.status(404).json({
@@ -81,6 +71,9 @@ export async function getActivity(req, res){
                 "message": "Not exist Activity"
             })
         }
+
+        console.log(dataActivity);
+        
 
         return res.status(200).json({
             status: true,
@@ -105,17 +98,18 @@ export async function getActivity(req, res){
 
 export async function saveActivity(req, res) {
     try {
-        const idSubject = req.params.id
-        const { name, dateEntry, percent } = req.body
+     
+        const { name, date, percentage, subject } = req.body
+        
        
-        if(!name || !dateEntry || !percent){
+        if(!name || !date || !percentage){
             return res.status(400).json({
                 "status": "false",
                 "message": "Missing required parameters: name, dateEntry, percent and percent"
             })
         }
     
-        const subjectFound = await Subject.findById(idSubject)
+        const subjectFound = await Subject.findById(subject)
         if(!subjectFound) {
             return res.status(404).json({
                 "status": "false",
@@ -126,19 +120,20 @@ export async function saveActivity(req, res) {
         const idUser = subjectFound.user;
         
 
-        const parsedDateEntry = new Date(dateEntry)
+        const parsedDateEntry = new Date(date)
     
         const currentDate =  moment.tz('America/Bogota').format()
         const newActivity = new Activity({
             name,
             dateEntry: parsedDateEntry,
-            percent,
+            percent: percentage,
             dateCreation: currentDate,
-            subject: idSubject,
+            subject: subject,
+            nameSubject: subjectFound.name,
             idUser: idUser,
         })
 
-        newActivity.subjectFound = idSubject
+        newActivity.subjectFound = subject
         subjectFound.activities.push(newActivity)
         await subjectFound.save()
         
@@ -159,19 +154,25 @@ export async function saveActivity(req, res) {
 
 export async function updateActivity(req, res) {
     try {
-        const idActivity = req.params.id;
-        const { name, percent, qualification, state, dateEntry } = req.body
-        const updateActivity = await Activity.findByIdAndUpdate(idActivity,
+        // const idActivity = req.params.id;
+        console.log("llego");
+        
+        const { name, percent, qualification, state, _id } = req.body
+        console.log(_id);
+        
+        const updateActivity = await Activity.findByIdAndUpdate(_id,
             {
                 name: name,
                 percent: percent,
                 qualification: qualification,
                 state: state,
-                dateEntry: dateEntry
+                // dateEntry: dateEntry
             },
 
             { new: true }
         )
+        
+        console.log(updateActivity);
         
         return res.status(200).json({
             "status": true,
@@ -180,7 +181,7 @@ export async function updateActivity(req, res) {
     } catch (error) {
         return res.status(500).json({
             "status": false,
-            "message": error
+            "message": error.message
         })
     }
 }
@@ -220,6 +221,31 @@ export async function deleteActivity(req, res) {
         return res.status(500).json({
             "status": false,
             "error": error
+        })
+    }
+}
+
+export async function totalActivities(req, res){
+    try {
+        const userId = req.user.id;
+
+        const activity = await Activity.find({idUser: userId})
+
+        const statusActivity = activity.reduce((amount, {state}) => {
+            amount[state] = (amount[state] || 0) +(1)
+            return amount; 
+        },{})
+        
+        
+        return res.status(200).json({
+            "status": true,
+            "data": statusActivity
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error.message
         })
     }
 }

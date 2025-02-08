@@ -1,16 +1,18 @@
 import {Router} from 'express'
 import { authRequired } from '../../middlewares/valideToken.js'
+import { validateRequestQuery } from '../../middlewares/valideRequest.js'
+import { activityQuerySchema } from '../../schemas/activityStates.js'
 
 
 import {
-    getActivitys,
+    getActivitiesSubjectByState,
     getActivitysSubject,
     getActivitysUser,
-    getActivitysToIdUser,
-    getActivity,
+    getActivityById,
     saveActivity,
     updateActivity,
-    deleteActivity
+    deleteActivity,
+    totalActivities
 }from '../../controllers/controllActivity.js'
 
 
@@ -22,6 +24,8 @@ const router = Router()
  *  name: Activitys
  *  description: Endpoints for activitys
 */
+
+router.get('/total-by-state', authRequired, totalActivities)
 
 /**
  * @swagger
@@ -59,7 +63,7 @@ const router = Router()
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getActivitys/:id/:state', authRequired, getActivitys)
+router.get('/getActivitys/:id/:state', authRequired, getActivitiesSubjectByState)
 
 /**
  * @swagger
@@ -95,27 +99,21 @@ router.get('/getActivitysSubject/:id', authRequired, getActivitysSubject)
 
 /**
  * @swagger
- * /activity/getActivitysUser/{id}/{state}:
+ * /activity/user:
  *   get:
  *     tags:
  *       - Activitys
- *     summary: Get activitys details for user
+ *     summary: Get activitys details for user according to state
  *     description: Obtain data activitys for user.
  *     produces:
  *       - application/json
  *     parameters:
- *        - name: id
- *          in: path
- *          required: true
- *          type: string
- *          description: User data id
- *          example: 664a9811b65819ff404906c7
  *        - name: state
- *          in: path
- *          required: true
+ *          in: query
+ *          required: false
  *          type: string
  *          description: State of the activity 
- *          example: 664a9811b65819ff404906c7
+ *          example: pending
  *     security:
  *      - bearerAuth: []
  *     responses:
@@ -129,40 +127,7 @@ router.get('/getActivitysSubject/:id', authRequired, getActivitysSubject)
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getActivitysUser/:id/:state', authRequired, getActivitysUser)
-
-/**
- * @swagger
- * /activity/getActivitysToIdUser/{id}:
- *   get:
- *     tags:
- *       - Activitys
- *     summary: Get activitys details for id user
- *     description: Obtain data activitys for user.
- *     produces:
- *       - application/json
- *     parameters:
- *        - name: id
- *          in: path
- *          required: true
- *          type: string
- *          description: User data id
- *          example: 664a9811b65819ff404906c7
- *     security:
- *      - bearerAuth: []
- *     responses:
- *       200:
- *         description: Get activitys successfully for user.
- *         schema:
- *           $ref: '#/definitions/SuccessfullyActivitys'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'
- *          
- */
-router.get('/getActivitysToIdUser/:id', authRequired, getActivitysToIdUser)
-
+router.get('/user', authRequired, validateRequestQuery(activityQuerySchema), getActivitysUser)
 
 /**
  * @swagger
@@ -198,11 +163,11 @@ router.get('/getActivitysToIdUser/:id', authRequired, getActivitysToIdUser)
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getActivity/:id', authRequired, getActivity)
+router.get('/:id', authRequired, getActivityById)
 
 /**
  * @swagger
- * /activity/saveActivity/{id}:
+ * /activity/saveActivity:
  *   post:
  *     tags:
  *       - Activitys
@@ -244,7 +209,7 @@ router.get('/getActivity/:id', authRequired, getActivity)
  *           $ref: '#/definitions/Error'       
  *          
  */
-router.post('/saveActivity/:id', authRequired,saveActivity)
+router.post('/save-activity', authRequired, saveActivity)
 
 /**
  * @swagger
@@ -282,7 +247,7 @@ router.post('/saveActivity/:id', authRequired,saveActivity)
  *           $ref: '#/definitions/Error'
  *          
  */
-router.put('/updateActivity/:id', authRequired,updateActivity)
+router.put('/update', authRequired,updateActivity)
 
 /**
  * @swagger

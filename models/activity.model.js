@@ -29,6 +29,10 @@ const activitySchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'Subject',
         },
+        nameSubject: {
+            type: String,
+            requiered: false,
+        },
         idUser:{
             type: String,
             required: false,
