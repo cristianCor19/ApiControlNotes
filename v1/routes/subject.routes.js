@@ -23,7 +23,7 @@ const router = Router()
 
 /**
  * @swagger
- * /subject/getSubjects/{id}:
+ * /subject/get-subjects:
  *   get:
  *     tags:
  *       - Subjects
@@ -31,13 +31,6 @@ const router = Router()
  *     description: Obtain data subjects.
  *     produces:
  *       - application/json
- *     parameters:
- *        - name: id
- *          in: path
- *          required: true
- *          type: string
- *          description: User data id
- *          example: 664a9811b65819ff404906c7
  *     security:
  *      - bearerAuth: []
  *     responses:
@@ -51,7 +44,7 @@ const router = Router()
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getSubjects/:id', authRequired,getSubjects)
+router.get('/get-subjects', authRequired,getSubjects)
 
 /**
  * @swagger
@@ -91,7 +84,7 @@ router.get('/getSubject/:id',authRequired,getSubject)
 
 /**
  * @swagger
- * /subject/saveSubject/{id}:
+ * /subject/save-subject/{id}:
  *   post:
  *     tags:
  *       - Subjects
@@ -134,7 +127,7 @@ router.get('/getSubject/:id',authRequired,getSubject)
  *         
  *          
  */
-router.post('/saveSubject/:id',authRequired, saveSubject)
+router.post('/save-subject',authRequired, saveSubject)
 
 /**
  * @swagger

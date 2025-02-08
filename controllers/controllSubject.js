@@ -4,7 +4,7 @@ import Activity from '../models/activity.model.js'
 
 export async function getSubjects(req,res){
     try {
-        const idUser = req.params.id;
+        const idUser = req.user.id;
         const dataSubjects = await Subject.find({user: idUser})
         return res.status(200).json({
             "status": true,
@@ -51,11 +51,10 @@ export async function getSubject(req, res){
 
 export async function saveSubject(req, res) {
     try {
-        const idUser = req.params.id;
-        const { name, color } = req.body
+        const idUser = req.user.id;
+        const {subject, customColor} = req.body
 
-
-        if (!name || !color) {
+        if (!subject || !customColor) {
             return res.status(400).json({
                 "status": false,
                 "message": "Missing required parameters: 'name' and 'color'"
@@ -72,8 +71,8 @@ export async function saveSubject(req, res) {
         }
 
         const newSubject = new Subject({
-            name,
-            color,
+            name: subject,
+            color: customColor,
             user: idUser,
         })
 
