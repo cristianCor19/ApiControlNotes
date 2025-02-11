@@ -21,8 +21,11 @@ export async function getActivitiesSubjectByState(req,res){
 
 export async function getActivitysSubject(req,res){
     try {
+        const limit = 3;
         const idSubject = req.params.id;
         const dataActivitys = await Activity.find({subject: idSubject})
+        .limit(limit)
+        .sort({ _id: -1 });
         return res.status(200).json({
             "status": true,
             data: dataActivitys,  
@@ -63,7 +66,7 @@ export async function getActivitysUser(req,res){
 export async function getActivityById(req, res){
     try {
         const idActivity = req.params.id;
-        console.log("arrive by id");
+        
         const dataActivity = await Activity.findById(idActivity)
         if(!dataActivity) {
             return res.status(404).json({
@@ -72,7 +75,7 @@ export async function getActivityById(req, res){
             })
         }
 
-        console.log(dataActivity);
+        
         
 
         return res.status(200).json({
@@ -155,10 +158,9 @@ export async function saveActivity(req, res) {
 export async function updateActivity(req, res) {
     try {
         // const idActivity = req.params.id;
-        console.log("llego");
-        
+    
         const { name, percent, qualification, state, _id } = req.body
-        console.log(_id);
+        
         
         const updateActivity = await Activity.findByIdAndUpdate(_id,
             {
@@ -172,7 +174,7 @@ export async function updateActivity(req, res) {
             { new: true }
         )
         
-        console.log(updateActivity);
+      
         
         return res.status(200).json({
             "status": true,
@@ -227,6 +229,9 @@ export async function deleteActivity(req, res) {
 
 export async function totalActivities(req, res){
     try {
+
+        console.log("lleog");
+        
         const userId = req.user.id;
 
         const activity = await Activity.find({idUser: userId})
@@ -235,7 +240,6 @@ export async function totalActivities(req, res){
             amount[state] = (amount[state] || 0) +(1)
             return amount; 
         },{})
-        
         
         return res.status(200).json({
             "status": true,

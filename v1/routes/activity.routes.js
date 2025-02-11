@@ -25,6 +25,42 @@ const router = Router()
  *  description: Endpoints for activitys
 */
 
+/**
+ * @swagger
+ * /activity/getActivity/{id}:
+ *   get:
+ *     tags:
+ *       - Activitys
+ *     summary: Get activity
+ *     description: Obtain data activity.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *        - name: id
+ *          in: path
+ *          required: true
+ *          type: string
+ *          description: Activity data id
+ *          example: 664a9811b65819ff404906c7
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Get Activity successfully .
+ *         schema:
+ *           $ref: '#/definitions/SuccessfullyActivity'
+ *       404:
+ *         description: Not found activity.
+ *         schema:
+ *           $ref: '#/definitions/notFound'
+ *       500:
+ *         description: Server error.
+ *         schema:
+ *           $ref: '#/definitions/Error'
+ *          
+ */
+router.get('/getActivity/:id', authRequired, getActivityById)
+
 router.get('/total-by-state', authRequired, totalActivities)
 
 /**
@@ -95,7 +131,7 @@ router.get('/getActivitys/:id/:state', authRequired, getActivitiesSubjectByState
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getActivitysSubject/:id', authRequired, getActivitysSubject)
+router.get('/subject/:id', authRequired, getActivitysSubject)
 
 /**
  * @swagger
@@ -129,41 +165,6 @@ router.get('/getActivitysSubject/:id', authRequired, getActivitysSubject)
  */
 router.get('/user', authRequired, validateRequestQuery(activityQuerySchema), getActivitysUser)
 
-/**
- * @swagger
- * /activity/getActivity/{id}:
- *   get:
- *     tags:
- *       - Activitys
- *     summary: Get activity
- *     description: Obtain data activity.
- *     produces:
- *       - application/json
- *     parameters:
- *        - name: id
- *          in: path
- *          required: true
- *          type: string
- *          description: Activity data id
- *          example: 664a9811b65819ff404906c7
- *     security:
- *      - bearerAuth: []
- *     responses:
- *       200:
- *         description: Get Activity successfully .
- *         schema:
- *           $ref: '#/definitions/SuccessfullyActivity'
- *       404:
- *         description: Not found activity.
- *         schema:
- *           $ref: '#/definitions/notFound'
- *       500:
- *         description: Server error.
- *         schema:
- *           $ref: '#/definitions/Error'
- *          
- */
-router.get('/:id', authRequired, getActivityById)
 
 /**
  * @swagger
