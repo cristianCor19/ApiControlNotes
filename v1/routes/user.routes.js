@@ -49,7 +49,7 @@ const router = Router()
  *         
  *          
  */
-router.get('/profile-user', authRequired, getProfileUser)
+router.get('/profile', authRequired, getProfileUser)
 
 
 /**
@@ -125,7 +125,7 @@ router.post('/register-user', validateRequestBody(registerUserShema), saveUser)
  *         
  *          
  */
-router.put('/updateUser/:id', updateUser)
+router.put('/update', authRequired, updateUser)
 
 /**
  * @swagger
@@ -158,7 +158,7 @@ router.put('/updateUser/:id', updateUser)
  *         
  *          
  */
-router.delete('/deleteUser/:id', deleteUserGeneral)
+router.delete('/delete',authRequired, deleteUserGeneral)
 
 
 

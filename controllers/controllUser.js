@@ -28,9 +28,9 @@ export async function getAllUsers() {
 
 export async function getProfileUser(req, res) {
     try {
-        const idUser = req.user.id;
+        const userId = req.user.id;
 
-        const dataUser = await User.findById(idUser)
+        const dataUser = await User.findById(userId)
         
         if(!dataUser) {
             return res.status(404).json({
@@ -105,13 +105,12 @@ export async function saveUser(req, res) {
 
 export async function updateUser(req, res) {
     try {
-        const idUser = req.params.id;
-        const { name, lastname, email, carrier, phone } = req.body
-        const updateUser = await User.findByIdAndUpdate(idUser,
+        const userId = req.user.id;
+        const { name, lastname, carrier, phone } = req.body
+        const updateUser = await User.findByIdAndUpdate(userId,
             {
                 name: name,
                 lastname: lastname,
-                email: email,
                 carrier: carrier,
                 phone: phone
             },
@@ -119,10 +118,10 @@ export async function updateUser(req, res) {
             { new: true }
         )
 
-        const uidFirebase = updateUser.uid
-        const deleteFirebase = await admin.auth().updateUser(uidFirebase, {
-            email: email,
-        })
+        // const uidFirebase = updateUser.uid
+        // const updateEmailFirebase = await admin.auth().updateUser(uidFirebase, {
+        //     email: email,
+        // })
         
 
         return res.status(200).json({
@@ -139,7 +138,7 @@ export async function updateUser(req, res) {
 
 export async function deleteUserGeneral(req, res) {
     try {
-        const idUser = req.params.id
+        const idUser = req.user.id
         const userDeleted = await User.findByIdAndDelete(idUser)
         const uidFirebase = userDeleted.uid
         const deleteFirebase = await admin.auth().deleteUser(uidFirebase)
