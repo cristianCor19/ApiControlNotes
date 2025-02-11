@@ -1,6 +1,7 @@
 import Subject from '../models/subject.model.js'
 import User from '../models/user.model.js'
 import Activity from '../models/activity.model.js'
+import { promise } from 'zod';
 
 export async function getSubjects(req,res){
     try {
@@ -8,7 +9,7 @@ export async function getSubjects(req,res){
         const dataSubjects = await Subject.find({user: idUser})
         return res.status(200).json({
             "status": true,
-            data: dataSubjects,  
+            data: dataSubjects,
         })
     } catch (error) {
         return res.status(500).json({
@@ -106,7 +107,7 @@ export async function updateSubject(req, res) {
 
             { new: true }
         )
-        
+
         return res.status(200).json({
             "status": true,
             "message": 'Update subject with successfully'
@@ -123,7 +124,7 @@ export async function updateSubject(req, res) {
 export async function deleteSubject(req, res) {
     try {
         const idSubject = req.params.id
-        
+
         const subjectDeleted = await Subject.findByIdAndDelete(idSubject)
         if(!subjectDeleted){
             return res.status(404).json({
@@ -142,13 +143,13 @@ export async function deleteSubject(req, res) {
                 "message": "User not found"
             })
         }
-       
+
 
         userFound.subjects = userFound.subjects.filter(
             subject => subject.toString() !== idSubject
         )
         await userFound.save()
-        
+
 
         return res.status(200).json({
             "status": true,
@@ -158,6 +159,42 @@ export async function deleteSubject(req, res) {
         return res.status(500).json({
             "status": false,
             "error": error
+        })
+    }
+}
+
+export async function getSubjectsActivity(req,res){
+    try {
+        const idUser = req.user.id;
+
+        const dataSubjects = await Subject.find({user: idUser})
+        .populate('activities', 'state')
+        .exec();
+        
+        const subjectActivityByState = dataSubjects.map(subject => {
+           
+            
+            const activityStateCount = subject.activities.reduce((account, {state}) => {
+                account[state] = (account[state] || 0) + 1;
+                return account;
+            }, {});
+
+            return {
+                ...subject.toObject(), //get atributes of the subject
+                activities: activityStateCount
+            }
+        })
+        
+
+
+        return res.status(200).json({
+            "status": true,
+            data: subjectActivityByState,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "message": error.message
         })
     }
 }

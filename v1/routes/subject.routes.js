@@ -8,6 +8,7 @@ import {
     saveSubject,
     updateSubject,
     deleteSubject,
+    getSubjectsActivity
 }from '../../controllers/controllSubject.js'
 
 
@@ -46,6 +47,8 @@ const router = Router()
  */
 router.get('/get-subjects', authRequired,getSubjects)
 
+router.get('/activities', authRequired,getSubjectsActivity)
+
 /**
  * @swagger
  * /subject/getSubject/{id}:
@@ -80,7 +83,7 @@ router.get('/get-subjects', authRequired,getSubjects)
  *           $ref: '#/definitions/Error'
  *          
  */
-router.get('/getSubject/:id',authRequired,getSubject)
+router.get('/:id',authRequired,getSubject)
 
 /**
  * @swagger
