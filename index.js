@@ -13,7 +13,7 @@ import swaggerDocs from './v1/swagger.js';
 const app = express();
 
 const corsOptions = {
-    origin: ["", ""],
+    origin: ["https://note-control-front.vercel.app"],
     credentials: true
 };
 
