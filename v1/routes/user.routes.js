@@ -87,7 +87,6 @@ router.get('/profile', authRequired, getProfileUser)
  */
 router.post('/register-user', validateRequestBody(registerUserShema), saveUser)
 
-
 /**
  * @swagger
  * /user/updateUser/{id}:

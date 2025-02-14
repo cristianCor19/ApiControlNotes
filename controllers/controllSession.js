@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import auth from '../firebase/configFirabase.js'
 import User from '../models/user.model.js'
-import {signInWithEmailAndPassword,sendPasswordResetEmail } from 'firebase/auth'
+import {signInWithEmailAndPassword,sendPasswordResetEmail, confirmPasswordReset } from 'firebase/auth'
 import { createAccessToken } from '../libs/jwt.js';
 
 
@@ -93,10 +93,25 @@ export async function verifySession(req, res){
 export async function sendEmailRecovey(req, res){
     try {
         const {email} = req.body
-        const recovery =  await sendPasswordResetEmail(auth, email);
+
+        const userFound = await User.findOne({email: email})
+        
+        if(!userFound){
+            return res.status(404).json({
+                "status": false,
+                "message": "User not found"
+            });
+        }
+
+
+        const recovery =  await sendPasswordResetEmail(auth, email,
+        );
+
+        
     
         return res.status(200).json({
             "status": true,
+            "email": userFound.email,
             "message": "Password recovery email successfully sent",
         })
         
@@ -105,5 +120,37 @@ export async function sendEmailRecovey(req, res){
             "status": false,
             "error": error.message
         })
+    }
+}
+
+export async function resetPasswordRecovey(req, res){
+    try {
+        const {oobCode, password, confirmPassword} = req.body;
+
+        console.log(oobCode);
+        console.log(password);
+
+        if(password !== confirmPassword){
+            return res.status(400).json({
+                "status": false,
+                "message": "The password is not the same"
+            });
+        }
+        
+        
+        const answer = await confirmPasswordReset(auth, oobCode, password);
+
+        return res.status(200).json({
+            "status": true,
+            "message": "password reset successfully"
+        });
+
+        
+    } catch (error) {
+        return res.status(500).json({
+            "status": false,
+            "error": error.message
+        });
+
     }
 }
