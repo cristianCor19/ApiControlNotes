@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import {
     loginUser,
+    loginUserGoogle,
     verifySession,
     sendEmailRecovey,
     resetPasswordRecovey
@@ -79,7 +80,9 @@ router.get('/verify-session', verifySession)
  *         
  *          
  */
-router.post('/signIn', loginUser)
+router.post('/signIn', loginUser) 
+
+router.post('/sign-google', loginUserGoogle) 
 
 /**
  * @swagger
