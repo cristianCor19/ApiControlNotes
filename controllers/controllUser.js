@@ -1,9 +1,9 @@
 import User from '../models/user.model.js'
-import jwt, { decode } from 'jsonwebtoken'
-import { genSalt, hash, compare } from 'bcrypt'
 import auth from '../firebase/configFirabase.js'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail} from 'firebase/auth'
+import { createUserWithEmailAndPassword, } from 'firebase/auth'
 import { configAdminFirebase } from "../firebase/configFirabaseAdmin.js";
+import { createAccessToken } from '../libs/jwt.js';
+
 
 
 import admin from 'firebase-admin'
@@ -83,10 +83,19 @@ export async function saveUser(req, res) {
                 uid: uidUser,
             })
 
-            const userSaveData = await newUser.save()
+            const userSave = await newUser.save()
+
+            const payload = {
+                id: userSave.id,
+                uid: userSave.uid
+              };
+            
+            const token = await createAccessToken(payload)
+            
 
             return res.status(200).json({
                 "status": true,
+                token: token,
                 "message": 'User saved successfully'
             })
         } else {
