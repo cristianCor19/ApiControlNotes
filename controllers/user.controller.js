@@ -2,7 +2,7 @@ import User from '../models/user.model.js'
 import auth from '../firebase/configFirabase.js'
 import { createUserWithEmailAndPassword, } from 'firebase/auth'
 import { configAdminFirebase } from "../firebase/configFirabaseAdmin.js";
-import { createAccessToken } from '../libs/jwt.js';
+import { createAccessToken } from '../auth/jwt.js';
 
 
 
@@ -62,7 +62,6 @@ export async function getProfileUser(req, res) {
 
 export async function saveUser(req, res) {
     try {
-        console.log('arrive');
         
         const {name, lastname, email, carrier,password, confirmPassword} = req.body
 

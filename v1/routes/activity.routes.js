@@ -13,7 +13,7 @@ import {
     updateActivity,
     deleteActivity,
     totalActivities
-}from '../../controllers/controllActivity.js'
+}from '../../controllers/activity.controller.js'
 
 
 const router = Router()

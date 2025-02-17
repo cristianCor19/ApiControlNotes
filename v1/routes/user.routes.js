@@ -8,7 +8,7 @@ import {
     deleteUserGeneral,
     getProfileUser,
     updateUser,
-}from '../../controllers/controllUser.js'
+}from '../../controllers/user.controller.js'
 
 const router = Router()
 

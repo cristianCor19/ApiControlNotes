@@ -1,4 +1,4 @@
-import { createAccessToken } from '../libs/jwt.js';
+import { createAccessToken } from '../auth/jwt.js';
 import User from '../models/user.model.js'
 
 

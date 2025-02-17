@@ -6,7 +6,7 @@ import {
     verifySession,
     sendEmailRecovey,
     resetPasswordRecovey
-} from '../../controllers/controllSession.js'
+} from '../../controllers/session.controller.js'
 
 const router = Router()
 
