@@ -230,8 +230,6 @@ export async function deleteActivity(req, res) {
 export async function totalActivities(req, res){
     try {
 
-        console.log("lleog");
-        
         const userId = req.user.id;
 
         const activity = await Activity.find({idUser: userId})

@@ -9,7 +9,7 @@ import {
     updateSubject,
     deleteSubject,
     getSubjectsActivity
-}from '../../controllers/controllSubject.js'
+}from '../../controllers/subject.controller.js'
 
 
 const router = Router()

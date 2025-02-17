@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import auth from '../firebase/configFirabase.js'
 import User from '../models/user.model.js'
 import { signInWithEmailAndPassword, sendPasswordResetEmail, confirmPasswordReset, GoogleAuthProvider, signInWithPopup,getAuth } from 'firebase/auth'
-import { createAccessToken } from '../libs/jwt.js';
+import { createAccessToken } from '../auth/jwt.js';
 import { createOrUpdateUser } from '../service/auth.service.js';
 
 
@@ -148,8 +148,6 @@ export async function resetPasswordRecovey(req, res) {
     try {
         const { oobCode, password, confirmPassword } = req.body;
 
-        console.log(oobCode);
-        console.log(password);
 
         if (password !== confirmPassword) {
             return res.status(400).json({
