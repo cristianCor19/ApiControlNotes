@@ -32,6 +32,11 @@ const userSchema = new Schema(
             required: true,
             unique: true
         },
+        authProvider: { 
+            type: String, 
+            enum: ['google', 'facebook', 'email'], 
+            default: 'email',
+        },
         subjects:[
             {
                 type: Schema.Types.ObjectId,
